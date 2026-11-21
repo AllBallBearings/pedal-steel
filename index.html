@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -32,17 +32,25 @@
       -webkit-touch-callout: none;
     }
 
-    html, body {
+    html {
       margin: 0;
       padding: 0;
       width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
       height: 100dvh;
       overflow: hidden;
       overscroll-behavior: none;
       touch-action: none;
-    }
-
-    body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: radial-gradient(circle at 50% 0%, #231e1b 0%, #111012 60%, #09090b 100%);
       color: #e5e7eb;
@@ -447,7 +455,7 @@
     }
   </style>
 </head>
-<body class="flex flex-col items-center justify-between">
+<body class="flex flex-col items-stretch justify-between">
 
   <!-- Silent inline WAV audio element to reliably wake iOS Safari audio session -->
   <audio id="iosAudioUnlock" playsinline preload="auto" class="hidden"
@@ -455,7 +463,7 @@
   </audio>
 
   <!-- Portrait Mode Recommendation Banner (narrow portrait phones only, dismissible) -->
-  <div id="rotateBanner" class="show-portrait w-full max-w-[1360px] mb-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/60 text-amber-200 text-xs items-center justify-between gap-2 shrink-0">
+  <div id="rotateBanner" class="show-portrait w-full mb-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/60 text-amber-200 text-xs items-center justify-between gap-2 shrink-0">
     <div class="flex items-center gap-2">
       <span class="text-base">📱↻</span>
       <span class="font-medium">Rotate to <strong>Landscape</strong> for best multi-touch playability</span>
@@ -465,8 +473,8 @@
     </button>
   </div>
 
-  <!-- Main Instrument Rig Wrapper (Locked cleanly to 100dvh) -->
-  <div class="w-full max-w-[1360px] flex-1 min-h-0 flex flex-col justify-between gap-2">
+  <!-- Main Instrument Rig Wrapper (Locked cleanly to full viewport width & height) -->
+  <div id="rigWrapper" class="w-full flex-1 min-h-0 flex flex-col justify-between gap-2">
 
     <!-- ==================== 1. TOP VINTAGE AMP CONTROL PANEL ==================== -->
     <header class="amp-panel rounded-2xl overflow-hidden shrink-0">
@@ -503,9 +511,9 @@
       </div>
 
       <!-- Amp Knobs + Live Chord Readout -->
-      <div class="amp-controls-row px-3 sm:px-4 py-2 flex flex-wrap lg:flex-nowrap items-center justify-between gap-2 sm:gap-4">
+      <div class="amp-controls-row px-3 sm:px-4 py-2 flex flex-wrap md:flex-nowrap items-center justify-between gap-2 sm:gap-3 lg:gap-4">
         <!-- Live Chord & Bar Position LED Readout -->
-        <div class="led-display rounded-xl px-3 py-1.5 flex items-center gap-3 min-w-[210px] flex-1 lg:flex-none lg:w-[290px]">
+        <div class="led-display rounded-xl px-3 py-1.5 flex items-center gap-3 min-w-[200px] flex-1 md:flex-none md:w-[240px] lg:w-[290px]">
           <div class="flex-1 min-w-0">
             <div class="text-[9px] uppercase tracking-widest text-slate-400 font-mono-tech flex items-center justify-between">
               <span>Chord</span>
@@ -529,7 +537,7 @@
         </div>
 
         <!-- Rotary Amp Knobs -->
-        <div class="flex items-center justify-center sm:justify-end gap-2.5 sm:gap-4 flex-1 overflow-x-auto">
+        <div class="flex items-center justify-around sm:justify-between md:justify-end gap-2 sm:gap-3 lg:gap-5 flex-1 min-w-0 overflow-x-auto">
           <div class="knob-wrap" data-param="ampVolume" data-min="0" data-max="1" data-value="0.78" data-default="0.78">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
             <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Volume</span>
@@ -569,7 +577,7 @@
       </div>
 
       <!-- Collapsible Keyboard Legend -->
-      <div id="helpDrawer" class="hidden border-t border-slate-700/80 bg-slate-950/90 px-4 py-3 text-xs text-slate-300">
+      <div id="helpDrawer" class="hidden border-t border-slate-700/80 bg-slate-950/90 px-4 py-3 text-xs text-slate-300 max-h-[30dvh] overflow-y-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div>
             <div class="text-amber-400 font-semibold mb-1">Plucking &amp; Grips</div>
@@ -634,7 +642,7 @@
         </div>
 
         <!-- Right Chrome Pickup & Pluck/Strum Zone -->
-        <div id="pluckZone" class="relative w-[96px] sm:w-[144px] md:w-[176px] shrink-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-950 border-l-2 border-slate-500 flex items-center justify-center cursor-pointer select-none z-20">
+        <div id="pluckZone" class="relative w-[96px] sm:w-[132px] md:w-[148px] lg:w-[176px] shrink-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-950 border-l-2 border-slate-500 flex items-center justify-center cursor-pointer select-none z-20">
           <!-- Realistic Chrome Single-Coil Pickup Housing -->
           <div class="chrome-pickup w-11 sm:w-14 h-[92%] rounded-lg flex flex-col items-center justify-around py-1.5 pointer-events-none opacity-90">
             <!-- 10 Pole Pieces -->
@@ -660,7 +668,7 @@
         </div>
 
         <!-- Full-Width High-DPI Vibrating Strings Canvas Overlay -->
-        <canvas id="stringsCanvas" class="absolute inset-0 pointer-events-none z-25" style="z-index: 24;"></canvas>
+        <canvas id="stringsCanvas" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 24;"></canvas>
       </div>
 
       <!-- Quick Nashville Grips & Action Row -->
@@ -1733,15 +1741,18 @@
       }
 
       /**
-       * Resizes the high-DPI canvas overlay to match the neck assembly dimensions.
+       * Resizes the high-DPI canvas overlay backing buffer to match the neck assembly dimensions.
        */
       function resizeStringsCanvas() {
         const rect = neckAssembly.getBoundingClientRect();
+        if (rect.width < 1 || rect.height < 1) return;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        stringsCanvas.width = Math.max(1, Math.floor(rect.width * dpr));
-        stringsCanvas.height = Math.max(1, Math.floor(rect.height * dpr));
-        stringsCanvas.style.width = `${rect.width}px`;
-        stringsCanvas.style.height = `${rect.height}px`;
+        const targetW = Math.max(1, Math.floor(rect.width * dpr));
+        const targetH = Math.max(1, Math.floor(rect.height * dpr));
+        if (stringsCanvas.width !== targetW || stringsCanvas.height !== targetH) {
+          stringsCanvas.width = targetW;
+          stringsCanvas.height = targetH;
+        }
         ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
@@ -1814,6 +1825,16 @@
         const fbRect = fretboardArea.getBoundingClientRect();
         const w = neckRect.width;
         const h = neckRect.height;
+
+        // Self-heal canvas backing store if layout dimensions changed during rotation
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const expectedW = Math.max(1, Math.floor(w * dpr));
+        const expectedH = Math.max(1, Math.floor(h * dpr));
+        if (w >= 1 && h >= 1 && (stringsCanvas.width !== expectedW || stringsCanvas.height !== expectedH)) {
+          stringsCanvas.width = expectedW;
+          stringsCanvas.height = expectedH;
+          ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
 
         ctx2d.clearRect(0, 0, w, h);
 
@@ -2467,31 +2488,75 @@
       stopDemoBtn.addEventListener('click', stopDemo);
 
       // =======================================================================
-      // 7. INITIALIZE APP ON LOAD
-      // =======================================================================
       // 7. INITIALIZE APP ON LOAD & HANDLE ROTATION / RESIZE
       // =======================================================================
+      let viewportSyncTimers = [];
+      const viewportMeta = document.querySelector('meta[name="viewport"]');
+      const BASE_VIEWPORT_CONTENT = 'width=device-width, initial-scale=1.0, viewport-fit=cover';
+
       function handleViewportResize() {
+        window.scrollTo(0, 0);
         resizeStringsCanvas();
+        updateToneBarPosition();
         setVolumePedal(state.volumePedal, 0.01);
       }
 
-      window.addEventListener('resize', handleViewportResize);
-      window.addEventListener('orientationchange', () => {
-        setTimeout(handleViewportResize, 120);
-      });
+      // Workaround for Chrome on iPad (WKWebView) bug where rotating portrait <-> landscape
+      // leaves the webpage viewport stuck at the previous orientation's width.
+      function nudgeIOSChromeViewport() {
+        if (viewportMeta) {
+          viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0001, viewport-fit=cover');
+          requestAnimationFrame(() => {
+            viewportMeta.setAttribute('content', BASE_VIEWPORT_CONTENT);
+            window.scrollTo(0, 1);
+            window.scrollTo(0, 0);
+            void document.documentElement.offsetWidth;
+            handleViewportResize();
+          });
+        } else {
+          window.scrollTo(0, 1);
+          window.scrollTo(0, 0);
+          handleViewportResize();
+        }
+      }
+
+      function scheduleViewportSync(isOrientationChange = false) {
+        viewportSyncTimers.forEach(id => clearTimeout(id));
+        viewportSyncTimers = [];
+        handleViewportResize();
+        requestAnimationFrame(handleViewportResize);
+        viewportSyncTimers.push(setTimeout(() => {
+          if (isOrientationChange) nudgeIOSChromeViewport();
+          else handleViewportResize();
+        }, 180));
+        viewportSyncTimers.push(setTimeout(() => {
+          if (isOrientationChange) nudgeIOSChromeViewport();
+          else handleViewportResize();
+        }, 450));
+      }
+
+      // Prevent accidental Safari/Chrome pinch-zoom during multi-touch play
+      document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+
+      window.addEventListener('resize', () => scheduleViewportSync(false));
+      window.addEventListener('orientationchange', () => scheduleViewportSync(true));
+      window.addEventListener('pageshow', () => scheduleViewportSync(true));
+      if (window.screen && window.screen.orientation && typeof window.screen.orientation.addEventListener === 'function') {
+        window.screen.orientation.addEventListener('change', () => scheduleViewportSync(true));
+      }
+      if (window.visualViewport && typeof window.visualViewport.addEventListener === 'function') {
+        window.visualViewport.addEventListener('resize', () => scheduleViewportSync(false));
+      }
 
       window.addEventListener('load', () => {
         buildStringLabels();
         buildFretboard();
-        handleViewportResize();
-        updateToneBarPosition();
+        scheduleViewportSync(false);
         updateReadouts();
 
         // Keep canvas crisp if layout flex-resizes
-        const neckAssembly = document.getElementById('neckAssembly');
         if (neckAssembly && typeof ResizeObserver !== 'undefined') {
-          new ResizeObserver(() => resizeStringsCanvas()).observe(neckAssembly);
+          new ResizeObserver(() => handleViewportResize()).observe(neckAssembly);
         }
 
         requestAnimationFrame(animateLoop);
