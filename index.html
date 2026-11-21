@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Nashville E9 — 10-String Pedal Steel Guitar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --walnut-dark: #1d0e07;
+      --walnut-mid: #47210f;
+      --walnut-light: #7c3b19;
+      --amber-glow: #f59e0b;
+      --chrome-1: #f8fafc;
+      --chrome-2: #cbd5e1;
+      --chrome-3: #64748b;
+      --chrome-4: #1e293b;
+      --tolex: #141518;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: none;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #231e1b 0%, #111012 60%, #09090b 100%);
+      color: #e5e7eb;
+      padding: max(6px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+    }
+
+    /* Multi-touch visual feedback ring */
+    .touch-dot {
+      position: fixed;
+      width: 44px;
+      height: 44px;
+      border-radius: 9999px;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 90;
+      border: 2px solid rgba(251, 191, 36, 0.85);
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.35) 0%, rgba(251, 191, 36, 0) 70%);
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.55);
+      transition: opacity 0.12s ease;
+    }
+    .touch-dot.strum {
+      border-color: rgba(56, 189, 248, 0.9);
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.38) 0%, rgba(56, 189, 248, 0) 70%);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.55);
+    }
+
+    /* Portrait rotation banner (shown only on narrow portrait phones) */
+    #rotateBanner {
+      display: none;
+    }
+    @media (max-width: 600px) and (orientation: portrait) {
+      #rotateBanner.show-portrait {
+        display: flex;
+      }
+    }
+
+    /* Compact iPhone / Short Landscape Responsive Tuning */
+    @media (max-height: 540px) {
+      .amp-controls-row {
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+        gap: 8px !important;
+      }
+      .knob-body {
+        width: 30px !important;
+        height: 30px !important;
+      }
+      .knob-cap {
+        width: 20px !important;
+        height: 20px !important;
+      }
+      .knob-indicator {
+        height: 8px !important;
+      }
+      .knob-wrap .knob-val {
+        display: none;
+      }
+      .led-display {
+        padding: 4px 10px !important;
+        min-width: 185px !important;
+      }
+      #chordReadout {
+        font-size: 1rem !important;
+        line-height: 1.1 !important;
+      }
+      .steel-body {
+        padding: 6px 8px !important;
+        gap: 4px !important;
+      }
+      .steel-brand-row {
+        display: none !important;
+      }
+      .floor-deck {
+        padding: 6px 8px !important;
+      }
+      .floor-pedal, .knee-lever {
+        min-height: 60px !important;
+        padding: 4px 4px !important;
+      }
+      .floor-pedal .pedal-letter {
+        font-size: 1.15rem !important;
+      }
+      .knee-lever .lever-title {
+        font-size: 0.9rem !important;
+      }
+      .vol-pedal-track, .vol-hint-col {
+        height: 60px !important;
+      }
+      .vol-treadle {
+        height: 24px !important;
+      }
+      .grip-btn {
+        padding: 4px 8px !important;
+        font-size: 11px !important;
+      }
+    }
+
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .font-vintage {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Vintage Amp Silverface / Blackface Panel */
+    .amp-panel {
+      background: linear-gradient(180deg, #1f2228 0%, #14161a 55%, #0e1013 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.7),
+        0 14px 32px rgba(0, 0, 0, 0.65);
+    }
+
+    .silverface-strip {
+      background: linear-gradient(180deg, #d8dee6 0%, #b4becb 48%, #9aa5b4 52%, #c7cfd9 100%);
+      color: #111827;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 2px 6px rgba(0,0,0,0.5);
+    }
+
+    /* Glowing Fender-style Jewel Pilot Light */
+    .jewel-lamp {
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 35% 35%, #fef3c7 0%, #f59e0b 40%, #b45309 80%, #451a03 100%);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.85), inset 0 1px 2px rgba(255, 255, 255, 0.7);
+      border: 2px solid #94a3b8;
+      transition: all 0.25s ease;
+    }
+    .jewel-lamp.standby {
+      background: radial-gradient(circle at 35% 35%, #78350f 0%, #451a03 70%, #1c0a00 100%);
+      box-shadow: none;
+    }
+
+    /* Vintage Rotary Knob */
+    .knob-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: ns-resize;
+      touch-action: none;
+    }
+
+    .knob-body {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 30% 25%, #3f444e 0%, #1d2026 55%, #0c0d10 100%);
+      border: 2px solid #525965;
+      box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.75),
+        inset 0 1px 2px rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s ease;
+    }
+    .knob-wrap:hover .knob-body,
+    .knob-wrap.dragging .knob-body {
+      border-color: #f59e0b;
+    }
+
+    .knob-cap {
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      background: conic-gradient(from 0deg, #d1d5db, #9ca3af, #f3f4f6, #6b7280, #d1d5db);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 1px 3px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .knob-indicator {
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      width: 3px;
+      height: 11px;
+      margin-left: -1.5px;
+      background: #111827;
+      border-radius: 2px;
+    }
+
+    /* Sho-Bud / Emmons Sunburst Walnut Body */
+    .steel-body {
+      position: relative;
+      background:
+        repeating-linear-gradient(
+          92deg,
+          rgba(255, 190, 120, 0.03) 0px,
+          rgba(255, 190, 120, 0.03) 2px,
+          rgba(0, 0, 0, 0.08) 2px,
+          rgba(0, 0, 0, 0.08) 7px
+        ),
+        radial-gradient(ellipse at 50% 45%, #8a411a 0%, #5e270d 45%, #311206 82%, #180803 100%);
+      border: 3px solid #cbd5e1;
+      box-shadow:
+        inset 0 2px 16px rgba(255, 210, 160, 0.18),
+        inset 0 -8px 24px rgba(0, 0, 0, 0.8),
+        0 20px 50px rgba(0, 0, 0, 0.75);
+    }
+
+    /* Brushed Aluminum Neck & Hardware */
+    .brushed-aluminum {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.06) 0px,
+          rgba(255, 255, 255, 0.06) 1px,
+          rgba(0, 0, 0, 0.04) 1px,
+          rgba(0, 0, 0, 0.04) 3px
+        ),
+        linear-gradient(180deg, #e2e8f0 0%, #94a3b8 22%, #cbd5e1 52%, #64748b 85%, #94a3b8 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 4px 12px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Fretboard surface (Classic dark ebony / black-and-white Sho-Bud deck) */
+    .fretboard-surface {
+      background: linear-gradient(180deg, #16181c 0%, #0d0f12 50%, #171a20 100%);
+      border-top: 2px solid #cbd5e1;
+      border-bottom: 2px solid #cbd5e1;
+      box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.75), inset 0 -6px 14px rgba(0, 0, 0, 0.75);
+    }
+
+    /* Pearloid Fret Markers */
+    .pearl-marker {
+      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e2e8f0 45%, #cbd5e1 80%, #94a3b8 100%);
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.35), inset 0 1px 1px #ffffff;
+    }
+
+    /* Chrome Pickup Housing */
+    .chrome-pickup {
+      background: linear-gradient(180deg, #f8fafc 0%, #cbd5e1 18%, #64748b 50%, #e2e8f0 82%, #475569 100%);
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Gleaming Chrome Tone Bar */
+    .tone-bar {
+      position: absolute;
+      top: -10px;
+      bottom: -10px;
+      width: 30px;
+      transform: translateX(-50%);
+      border-radius: 15px;
+      background: linear-gradient(
+        90deg,
+        #475569 0%,
+        #cbd5e1 16%,
+        #ffffff 32%,
+        #f8fafc 44%,
+        #94a3b8 62%,
+        #334155 82%,
+        #94a3b8 94%,
+        #1e293b 100%
+      );
+      box-shadow:
+        6px 0 16px rgba(0, 0, 0, 0.75),
+        -3px 0 8px rgba(0, 0, 0, 0.45),
+        inset 0 3px 6px rgba(255, 255, 255, 0.85),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.55);
+      cursor: grab;
+      z-index: 30;
+      touch-action: none;
+      transition: box-shadow 0.15s ease;
+    }
+    .tone-bar:active,
+    .tone-bar.dragging {
+      cursor: grabbing;
+      box-shadow:
+        10px 0 22px rgba(0, 0, 0, 0.85),
+        0 0 14px rgba(245, 158, 11, 0.45),
+        inset 0 3px 6px rgba(255, 255, 255, 0.95);
+    }
+    .tone-bar::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: rgba(245, 158, 11, 0.65);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* Floor Pedal Styling */
+    .floor-pedal {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.14) 0px,
+          rgba(255, 255, 255, 0.14) 3px,
+          rgba(0, 0, 0, 0.25) 3px,
+          rgba(0, 0, 0, 0.25) 6px
+        ),
+        linear-gradient(180deg, #94a3b8 0%, #64748b 40%, #475569 100%);
+      border: 2px solid #cbd5e1;
+      box-shadow:
+        0 8px 0 #1e293b,
+        0 12px 18px rgba(0, 0, 0, 0.65),
+        inset 0 1px 2px rgba(255, 255, 255, 0.65);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.1s ease;
+      cursor: pointer;
+      touch-action: none;
+    }
+    .floor-pedal.active {
+      transform: translateY(6px);
+      border-color: #f59e0b;
+      box-shadow:
+        0 2px 0 #1e293b,
+        0 4px 10px rgba(245, 158, 11, 0.35),
+        inset 0 2px 8px rgba(245, 158, 11, 0.35);
+    }
+
+    /* Knee Lever Styling */
+    .knee-lever {
+      background: linear-gradient(135deg, #334155 0%, #1e293b 60%, #0f172a 100%);
+      border: 2px solid #64748b;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.1s ease;
+      cursor: pointer;
+      touch-action: none;
+    }
+    .knee-lever.active {
+      border-color: #38bdf8;
+      background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4), inset 0 1px 4px rgba(56, 189, 248, 0.4);
+      transform: scale(0.96);
+    }
+
+    /* Volume Treadle Pedal */
+    .vol-pedal-track {
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #090d16 100%);
+      border: 2px solid #475569;
+      box-shadow: inset 0 4px 14px rgba(0, 0, 0, 0.85);
+      touch-action: none;
+      cursor: ns-resize;
+    }
+    .vol-treadle {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.1) 0px,
+          rgba(255, 255, 255, 0.1) 2px,
+          rgba(0, 0, 0, 0.3) 2px,
+          rgba(0, 0, 0, 0.3) 5px
+        ),
+        linear-gradient(180deg, #cbd5e1 0%, #64748b 50%, #334155 100%);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.75);
+      transition: background 0.1s ease;
+    }
+
+    /* Vintage LED Readout */
+    .led-display {
+      background: #0a0c0e;
+      border: 1px solid #334155;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.9);
+      text-shadow: 0 0 10px rgba(245, 158, 11, 0.55);
+    }
+
+    /* Grip Buttons */
+    .grip-btn {
+      background: linear-gradient(180deg, #272b33 0%, #17191f 100%);
+      border: 1px solid #3f4552;
+      box-shadow: 0 3px 0 #090a0d, 0 5px 10px rgba(0, 0, 0, 0.45);
+      transition: all 0.08s ease;
+    }
+    .grip-btn:hover {
+      border-color: #f59e0b;
+      color: #fde68a;
+    }
+    .grip-btn:active,
+    .grip-btn.flash {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #090a0d, 0 0 12px rgba(245, 158, 11, 0.4);
+      border-color: #f59e0b;
+      background: linear-gradient(180deg, #451a03 0%, #271104 100%);
+    }
+
+    /* Interactive surfaces explicitly locked against browser gestures */
+    .amp-panel, .steel-body, .floor-pedal, .knee-lever, .grip-btn, .vol-pedal-track, #fretboardArea, #pluckZone, #toneBar {
+      touch-action: none;
+    }
+
+    /* Custom subtle scrollbars if needed */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f1115;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-between">
+
+  <!-- Silent inline WAV audio element to reliably wake iOS Safari audio session -->
+  <audio id="iosAudioUnlock" playsinline preload="auto" class="hidden"
+    src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA">
+  </audio>
+
+  <!-- Portrait Mode Recommendation Banner (narrow portrait phones only, dismissible) -->
+  <div id="rotateBanner" class="show-portrait w-full max-w-[1360px] mb-1.5 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/60 text-amber-200 text-xs items-center justify-between gap-2 shrink-0">
+    <div class="flex items-center gap-2">
+      <span class="text-base">📱↻</span>
+      <span class="font-medium">Rotate to <strong>Landscape</strong> for best multi-touch playability</span>
+    </div>
+    <button id="dismissRotateBtn" class="px-2 py-0.5 rounded bg-amber-500/30 hover:bg-amber-500/50 text-amber-100 font-semibold text-[11px] shrink-0">
+      Dismiss
+    </button>
+  </div>
+
+  <!-- Main Instrument Rig Wrapper (Locked cleanly to 100dvh) -->
+  <div class="w-full max-w-[1360px] flex-1 min-h-0 flex flex-col justify-between gap-2">
+
+    <!-- ==================== 1. TOP VINTAGE AMP CONTROL PANEL ==================== -->
+    <header class="amp-panel rounded-2xl overflow-hidden shrink-0">
+      <!-- Silverface Header Strip -->
+      <div class="silverface-strip px-3 sm:px-4 py-1 flex flex-wrap items-center justify-between gap-1.5 text-xs font-semibold tracking-wide">
+        <div class="flex items-center gap-2">
+          <div id="jewelLamp" class="jewel-lamp standby" title="Amp Power Status"></div>
+          <span class="font-vintage italic text-sm sm:text-lg font-bold tracking-tight text-slate-900">Nashville E9</span>
+          <span class="hidden md:inline-block px-2 py-0.5 rounded bg-slate-900 text-amber-400 font-mono-tech text-[10px] uppercase tracking-wider">Twin-10 Tube Rig</span>
+          <button id="audioUnlockPill" class="px-2.5 py-0.5 rounded-full bg-amber-600 text-white font-mono-tech text-[10px] uppercase tracking-wider shadow animate-pulse">
+            🔊 Tap to Enable Audio
+          </button>
+        </div>
+
+        <!-- Demo Licks Bar -->
+        <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
+          <span class="text-[10px] uppercase tracking-wider text-slate-700 font-bold mr-1 hidden lg:inline">Demo Licks:</span>
+          <button data-demo="swell" class="demo-btn px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
+            <span>▶</span> I–IV Swell
+          </button>
+          <button data-demo="turnaround" class="demo-btn px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
+            <span>▶</span> Turnaround
+          </button>
+          <button data-demo="ambient" class="demo-btn px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
+            <span>▶</span> Space Steel
+          </button>
+          <button id="stopDemoBtn" class="hidden px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-red-700 text-white hover:bg-red-600 transition text-[10px] sm:text-[11px] font-semibold shadow">
+            ■ Stop
+          </button>
+          <button id="toggleHelpBtn" class="ml-0.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-800/90 text-amber-300 hover:bg-slate-900 transition text-[10px] sm:text-[11px] font-medium border border-slate-600">
+            ⌨ Keys
+          </button>
+        </div>
+      </div>
+
+      <!-- Amp Knobs + Live Chord Readout -->
+      <div class="amp-controls-row px-3 sm:px-4 py-2 flex flex-wrap lg:flex-nowrap items-center justify-between gap-2 sm:gap-4">
+        <!-- Live Chord & Bar Position LED Readout -->
+        <div class="led-display rounded-xl px-3 py-1.5 flex items-center gap-3 min-w-[210px] flex-1 lg:flex-none lg:w-[290px]">
+          <div class="flex-1 min-w-0">
+            <div class="text-[9px] uppercase tracking-widest text-slate-400 font-mono-tech flex items-center justify-between">
+              <span>Chord</span>
+              <span id="barFretReadout" class="text-sky-400">FRET 0.0</span>
+            </div>
+            <div id="chordReadout" class="text-lg sm:text-xl font-bold font-mono-tech text-amber-400 truncate mt-0.5">
+              E Major
+            </div>
+            <div id="activePedalsReadout" class="text-[9px] font-mono-tech text-slate-400 truncate">
+              Open E9 Tuning
+            </div>
+          </div>
+          <div class="flex flex-col items-end gap-1">
+            <button id="autoSwellBtn" class="px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm" title="Automatically swells volume smoothly on every pluck">
+              Auto-Swell: ON
+            </button>
+            <button id="vibratoBtn" class="px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-sky-500/20 border-sky-400 text-sky-300" title="Toggle subtle singing bar vibrato">
+              Vibrato: MED
+            </button>
+          </div>
+        </div>
+
+        <!-- Rotary Amp Knobs -->
+        <div class="flex items-center justify-center sm:justify-end gap-2.5 sm:gap-4 flex-1 overflow-x-auto">
+          <div class="knob-wrap" data-param="ampVolume" data-min="0" data-max="1" data-value="0.78" data-default="0.78">
+            <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
+            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Volume</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">78%</span>
+          </div>
+
+          <div class="knob-wrap" data-param="toneChime" data-min="0" data-max="1" data-value="0.62" data-default="0.62">
+            <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
+            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Chime</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">62%</span>
+          </div>
+
+          <div class="knob-wrap" data-param="tubeWarmth" data-min="0" data-max="1" data-value="0.35" data-default="0.35">
+            <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
+            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Tubes</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">35%</span>
+          </div>
+
+          <div class="knob-wrap" data-param="reverb" data-min="0" data-max="1" data-value="0.48" data-default="0.48">
+            <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
+            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Spring Rev</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">48%</span>
+          </div>
+
+          <div class="knob-wrap" data-param="delay" data-min="0" data-max="1" data-value="0.28" data-default="0.28">
+            <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
+            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Tape Delay</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">28%</span>
+          </div>
+
+          <div class="knob-wrap" data-param="glideSpeed" data-min="0" data-max="1" data-value="0.65" data-default="0.65">
+            <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
+            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Bar Glide</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">65%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsible Keyboard Legend -->
+      <div id="helpDrawer" class="hidden border-t border-slate-700/80 bg-slate-950/90 px-4 py-3 text-xs text-slate-300">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div>
+            <div class="text-amber-400 font-semibold mb-1">Plucking &amp; Grips</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">1</kbd>–<kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">9</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">0</kbd> Pluck Strings 1–10</div>
+            <div class="mt-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">Q</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">W</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">E</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">R</kbd> Classic 3-String Grips</div>
+          </div>
+          <div>
+            <div class="text-amber-400 font-semibold mb-1">Floor Pedals (A, B, C)</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">A</kbd> Raises Str 5 &amp; 10 (+2)</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">S</kbd> Raises Str 3 &amp; 6 (+1)</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">D</kbd> Raises Str 4 &amp; 5 (+2)</div>
+          </div>
+          <div>
+            <div class="text-sky-400 font-semibold mb-1">Knee Levers (LKL, LKR, RKR)</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">Z</kbd> LKL: Raises Str 4 &amp; 8 (+1)</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">X</kbd> LKR: Lowers Str 4 &amp; 8 (-1)</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">C</kbd> RKR: Lowers Str 2 (-2) &amp; 9 (-1)</div>
+          </div>
+          <div>
+            <div class="text-emerald-400 font-semibold mb-1">Bar, Volume &amp; Damping</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">→</kbd> Slide Tone Bar (or drag bar)</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">↑</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">↓</kbd> / Scroll: Volume Pedal Swell</div>
+            <div><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono-tech text-[10px]">Space</kbd> Palm Mute / Damp All</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==================== 2. PEDAL STEEL INSTRUMENT DECK ==================== -->
+    <main class="steel-body rounded-2xl p-2.5 sm:p-3.5 flex-1 min-h-0 flex flex-col gap-2">
+      <!-- Top Brand Inlay & Quick Tip -->
+      <div class="steel-brand-row flex flex-wrap items-center justify-between gap-2 px-1 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="font-vintage italic text-amber-200/90 text-sm sm:text-base tracking-wide drop-shadow">Sho-Master Pro E9</span>
+          <span class="text-[11px] text-amber-100/60 hidden md:inline">• Multi-touch ready: slide bar, hold pedals &amp; strum pickup simultaneously</span>
+        </div>
+        <div id="statusBadge" class="text-[10px] font-mono-tech px-2.5 py-0.5 rounded-full bg-black/45 border border-amber-400/30 text-amber-200">
+          Tap anywhere to ignite tubes
+        </div>
+      </div>
+
+      <!-- Main Neck + Fretboard + Pickup Assembly -->
+      <div id="neckAssembly" class="relative w-full flex-1 min-h-[145px] rounded-xl overflow-hidden flex items-stretch shadow-2xl border border-slate-400/60 bg-slate-950">
+
+        <!-- Left Keyhead / String Tuning Labels -->
+        <div class="brushed-aluminum w-[54px] sm:w-[74px] shrink-0 flex flex-col justify-between py-1 px-1 border-r-2 border-slate-700 z-20">
+          <div class="text-[8px] font-bold uppercase tracking-wider text-slate-800 text-center border-b border-slate-500/50 pb-0.5">
+            STR/NOTE
+          </div>
+          <div id="stringLabelsCol" class="flex-1 flex flex-col justify-around py-0.5">
+            <!-- Populated by JS for strings 1..10 -->
+          </div>
+        </div>
+
+        <!-- Center Interactive Fretboard + Chrome Tone Bar -->
+        <div id="fretboardArea" class="fretboard-surface relative flex-1 min-w-0 cursor-crosshair select-none">
+          <!-- Fret Lines, Numbers, Chord Labels, Pearloid Markers (populated by JS) -->
+          <div id="fretsLayer" class="absolute inset-0 pointer-events-none"></div>
+
+          <!-- Chrome Tone Bar -->
+          <div id="toneBar" class="tone-bar" title="Drag left/right to slide &amp; add bar vibrato"></div>
+        </div>
+
+        <!-- Right Chrome Pickup & Pluck/Strum Zone -->
+        <div id="pluckZone" class="relative w-[96px] sm:w-[144px] md:w-[176px] shrink-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-950 border-l-2 border-slate-500 flex items-center justify-center cursor-pointer select-none z-20">
+          <!-- Realistic Chrome Single-Coil Pickup Housing -->
+          <div class="chrome-pickup w-11 sm:w-14 h-[92%] rounded-lg flex flex-col items-center justify-around py-1.5 pointer-events-none opacity-90">
+            <!-- 10 Pole Pieces -->
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-800 border border-slate-400 shadow-inner"></div>
+          </div>
+
+          <!-- Pluck/Strum Helper Label -->
+          <div class="absolute right-1.5 top-1.5 text-[9px] font-mono-tech uppercase tracking-wider text-amber-300/80 bg-black/60 px-1.5 py-0.5 rounded pointer-events-none">
+            Pluck / Strum
+          </div>
+
+          <!-- Chrome Changer Bridge on far right -->
+          <div class="brushed-aluminum absolute right-0 top-0 bottom-0 w-3 sm:w-4 border-l border-slate-600 pointer-events-none"></div>
+        </div>
+
+        <!-- Full-Width High-DPI Vibrating Strings Canvas Overlay -->
+        <canvas id="stringsCanvas" class="absolute inset-0 pointer-events-none z-25" style="z-index: 24;"></canvas>
+      </div>
+
+      <!-- Quick Nashville Grips & Action Row -->
+      <div class="flex flex-wrap items-center justify-between gap-1.5 shrink-0">
+        <div class="flex flex-wrap items-center gap-1 sm:gap-2">
+          <span class="text-[10px] uppercase tracking-widest text-amber-200/80 font-bold mr-1 hidden sm:inline">Grips:</span>
+          <button data-grip="high" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+            <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">Q</span>
+            High <span class="text-slate-400 text-[10px] hidden md:inline">(3-4-5)</span>
+          </button>
+          <button data-grip="mid" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+            <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">W</span>
+            Mid <span class="text-slate-400 text-[10px] hidden md:inline">(4-5-6)</span>
+          </button>
+          <button data-grip="warm" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+            <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">E</span>
+            Warm <span class="text-slate-400 text-[10px] hidden md:inline">(5-6-8)</span>
+          </button>
+          <button data-grip="low" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+            <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">R</span>
+            Low <span class="text-slate-400 text-[10px] hidden md:inline">(8-9-10)</span>
+          </button>
+          <button data-grip="strum" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-amber-200 flex items-center gap-1">
+            ✨ Strum
+          </button>
+        </div>
+
+        <button id="muteBtn" class="grip-btn px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-xs font-semibold text-rose-300 border-rose-500/40 hover:border-rose-400 flex items-center gap-1.5">
+          <span class="font-mono-tech text-[10px] text-rose-400 bg-black/50 px-1 rounded hidden sm:inline">Space</span>
+          Palm Damp
+        </button>
+      </div>
+    </main>
+
+    <!-- ==================== 3. LOWER FLOOR DECK (PEDALS, KNEE LEVERS & VOLUME) ==================== -->
+    <section class="amp-panel floor-deck rounded-2xl p-2.5 sm:p-3.5 shrink-0">
+      <div class="flex flex-row items-stretch justify-between gap-2.5 sm:gap-4">
+
+        <!-- Left: Floor Pedals A, B, C + Latch Mode Toggle -->
+        <div class="flex-1 flex flex-col gap-1.5 min-w-0">
+          <div class="flex items-center justify-between gap-1">
+            <div class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 truncate">
+              <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+              Pedals
+            </div>
+            <button id="latchModeBtn" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-800 border border-slate-600 text-slate-200 hover:border-amber-400 transition shrink-0">
+              <span id="latchModeText" class="text-amber-400">Momentary</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2.5">
+            <!-- Pedal A -->
+            <button id="pedal-A" data-mech="A" class="floor-pedal rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
+              <div class="flex items-center justify-between w-full px-0.5">
+                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-900/80 text-amber-300 hidden sm:inline">A</span>
+                <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led ml-auto"></span>
+              </div>
+              <div class="pedal-letter text-xl sm:text-2xl font-black text-slate-950 drop-shadow leading-none">A</div>
+              <div class="text-[9px] font-mono-tech font-bold text-slate-950 bg-white/60 px-1 py-0.5 rounded text-center truncate w-full">
+                5,10 +2
+              </div>
+            </button>
+
+            <!-- Pedal B -->
+            <button id="pedal-B" data-mech="B" class="floor-pedal rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
+              <div class="flex items-center justify-between w-full px-0.5">
+                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-900/80 text-amber-300 hidden sm:inline">S</span>
+                <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led ml-auto"></span>
+              </div>
+              <div class="pedal-letter text-xl sm:text-2xl font-black text-slate-950 drop-shadow leading-none">B</div>
+              <div class="text-[9px] font-mono-tech font-bold text-slate-950 bg-white/60 px-1 py-0.5 rounded text-center truncate w-full">
+                3,6 +1
+              </div>
+            </button>
+
+            <!-- Pedal C -->
+            <button id="pedal-C" data-mech="C" class="floor-pedal rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
+              <div class="flex items-center justify-between w-full px-0.5">
+                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-900/80 text-amber-300 hidden sm:inline">D</span>
+                <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led ml-auto"></span>
+              </div>
+              <div class="pedal-letter text-xl sm:text-2xl font-black text-slate-950 drop-shadow leading-none">C</div>
+              <div class="text-[9px] font-mono-tech font-bold text-slate-950 bg-white/60 px-1 py-0.5 rounded text-center truncate w-full">
+                4,5 +2
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Middle: Knee Levers (LKL, LKR, RKR) -->
+        <div class="flex-1 flex flex-col gap-1.5 min-w-0">
+          <div class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 truncate">
+            <span class="w-2 h-2 rounded-full bg-sky-400 shrink-0"></span>
+            Knee Levers
+          </div>
+
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2.5">
+            <!-- LKL -->
+            <button id="lever-LKL" data-mech="LKL" class="knee-lever rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
+              <div class="flex items-center justify-between w-full px-0.5">
+                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-950/80 text-sky-300 hidden sm:inline">Z</span>
+                <span class="w-2 h-2 rounded-full bg-slate-950 lever-led ml-auto"></span>
+              </div>
+              <div class="lever-title text-sm sm:text-lg font-bold text-slate-100 leading-none">LKL</div>
+              <div class="text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/70 px-1 py-0.5 rounded text-center truncate w-full">
+                4,8 +1
+              </div>
+            </button>
+
+            <!-- LKR -->
+            <button id="lever-LKR" data-mech="LKR" class="knee-lever rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
+              <div class="flex items-center justify-between w-full px-0.5">
+                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-950/80 text-sky-300 hidden sm:inline">X</span>
+                <span class="w-2 h-2 rounded-full bg-slate-950 lever-led ml-auto"></span>
+              </div>
+              <div class="lever-title text-sm sm:text-lg font-bold text-slate-100 leading-none">LKR</div>
+              <div class="text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/70 px-1 py-0.5 rounded text-center truncate w-full">
+                4,8 -1
+              </div>
+            </button>
+
+            <!-- RKR -->
+            <button id="lever-RKR" data-mech="RKR" class="knee-lever rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
+              <div class="flex items-center justify-between w-full px-0.5">
+                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-950/80 text-sky-300 hidden sm:inline">C</span>
+                <span class="w-2 h-2 rounded-full bg-slate-950 lever-led ml-auto"></span>
+              </div>
+              <div class="lever-title text-sm sm:text-lg font-bold text-slate-100 leading-none">RKR</div>
+              <div class="text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/70 px-1 py-0.5 rounded text-center truncate w-full">
+                2,9 -1
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Rockable Volume Pedal -->
+        <div class="w-[100px] sm:w-[156px] lg:w-[180px] shrink-0 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 truncate">Vol Pedal</span>
+            <span id="volPedalReadout" class="font-mono-tech text-[11px] font-bold text-amber-400">85%</span>
+          </div>
+
+          <div class="flex items-center gap-2 flex-1">
+            <!-- Vertical Rockable Treadle -->
+            <div id="volPedalTrack" class="vol-pedal-track relative flex-1 h-[82px] sm:h-[96px] rounded-xl p-1 overflow-hidden" title="Drag up/down, use Scroll Wheel, or Up/Down arrows to swell volume">
+              <!-- Glow Fill -->
+              <div id="volPedalFill" class="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-amber-600/35 to-amber-400/15 pointer-events-none transition-none" style="height: 85%;"></div>
+              <!-- Treadle Footplate -->
+              <div id="volTreadle" class="vol-treadle absolute left-1 right-1 h-8 rounded-lg flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-[8px] font-black tracking-widest text-slate-950 uppercase">Goodrich</span>
+                <div class="w-6 h-0.5 bg-slate-900/60 mt-0.5 rounded"></div>
+              </div>
+            </div>
+
+            <!-- Quick Swell Hint -->
+            <div class="vol-hint-col hidden sm:flex flex-col justify-between h-[96px] text-[9px] font-mono-tech text-slate-400 py-1">
+              <span class="text-amber-300">TOE</span>
+              <span class="text-center text-[8px] leading-tight text-slate-500">↑↓<br/>Drag</span>
+              <span>HEEL</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- Floating Multi-Touch Indicators Container -->
+  <div id="touchOverlay" class="fixed inset-0 pointer-events-none z-50"></div>
+
+  <script>
+    /**
+     * =========================================================================
+     * NASHVILLE E9 10-STRING PEDAL STEEL GUITAR — COMPLETE ENGINE
+     * =========================================================================
+     * Architecture:
+     * 1. Copedent & Music Theory Model (10 strings, 3 pedals, 3 knee levers, chord detector)
+     * 2. Web Audio Polyphonic Synthesis Engine (Custom PeriodicWaves, dual-oscillator
+     *    harmonic damping, metallic fingerpick transient, pre-FX volume pedal,
+     *    tube saturation, Twin Reverb tone stack, stereo convolution reverb & tape delay)
+     * 3. High-DPI Canvas String Vibration & Metallic Rendering Loop (60fps)
+     * 4. Tactile UI Controllers (Tone Bar drag/glide, Pickup Pluck/Strum, Knobs, Pedals, Keys)
+     * 5. Automated Real-Time Demo Licks Player
+     */
+
+    (function () {
+      'use strict';
+
+      // =======================================================================
+      // 1. E9 NASHVILLE COPEDENT & TUNING DATA
+      // =======================================================================
+      const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      const FRET_CHORD_LABELS = ['E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G'];
+      const MAX_FRET = 15;
+
+      // Authentic 10-string E9 Chromatic Nashville Tuning (top = string 1, bottom = string 10)
+      const STRINGS = [
+        { num: 1,  note: 'F#4', midi: 66, freq: 369.99, gauge: 1.25, wound: false, key: '1' },
+        { num: 2,  note: 'D#4', midi: 63, freq: 311.13, gauge: 1.40, wound: false, key: '2' },
+        { num: 3,  note: 'G#4', midi: 68, freq: 415.30, gauge: 1.15, wound: false, key: '3' },
+        { num: 4,  note: 'E4',  midi: 64, freq: 329.63, gauge: 1.35, wound: false, key: '4' },
+        { num: 5,  note: 'B3',  midi: 59, freq: 246.94, gauge: 1.65, wound: false, key: '5' },
+        { num: 6,  note: 'G#3', midi: 56, freq: 207.65, gauge: 1.90, wound: false, key: '6' },
+        { num: 7,  note: 'F#3', midi: 54, freq: 185.00, gauge: 2.35, wound: true,  key: '7' },
+        { num: 8,  note: 'E3',  midi: 52, freq: 164.81, gauge: 2.65, wound: true,  key: '8' },
+        { num: 9,  note: 'D3',  midi: 50, freq: 146.83, gauge: 2.95, wound: true,  key: '9' },
+        { num: 10, note: 'B2',  midi: 47, freq: 123.47, gauge: 3.30, wound: true,  key: '0' }
+      ];
+
+      // Classic Nashville 3-string grips (1-indexed string numbers)
+      const GRIPS = {
+        high:  [3, 4, 5],
+        mid:   [4, 5, 6],
+        warm:  [5, 6, 8],
+        low:   [8, 9, 10],
+        strum: [10, 8, 6, 5, 4, 3]
+      };
+
+      // Instrument State
+      const state = {
+        barFret: 0.0,         // Current rendered & sounding bar position (0..15)
+        targetBarFret: 0.0,   // Target fret when clicking/gliding
+        isDraggingBar: false,
+        latchMode: false,
+        autoSwell: true,
+        vibratoLevel: 1,      // 0 = OFF, 1 = MED, 2 = LUSH
+        volumePedal: 0.85,    // 0.0 .. 1.0
+        mechs: {
+          A: false,
+          B: false,
+          C: false,
+          LKL: false,
+          LKR: false,
+          RKR: false
+        },
+        params: {
+          ampVolume: 0.78,
+          toneChime: 0.62,
+          tubeWarmth: 0.35,
+          reverb: 0.48,
+          delay: 0.28,
+          glideSpeed: 0.65
+        },
+        // Visual vibration state per string (0..9)
+        stringVis: STRINGS.map(() => ({
+          amp: 0,
+          phase: 0,
+          freqVis: 18,
+          lastPluckTime: 0,
+          ringing: false
+        }))
+      };
+
+      /**
+       * Computes total semitone bend for a given 1-indexed string number based on
+       * currently engaged pedals and knee levers.
+       */
+      function getStringBendSemitones(stringNum) {
+        let bend = 0;
+        const m = state.mechs;
+
+        // Pedal A: Raises 5 & 10 by +2 (B -> C#)
+        // Pedal C: Raises 4 & 5 by +2 (E -> F#, B -> C#)
+        // On a real changer, A and C both pull string 5 to the same +2 stop.
+        if (stringNum === 5) {
+          if (m.A || m.C) bend += 2;
+        }
+        if (stringNum === 10 && m.A) bend += 2;
+        if (stringNum === 4 && m.C) bend += 2;
+
+        // Pedal B: Raises 3 & 6 by +1 (G# -> A)
+        if ((stringNum === 3 || stringNum === 6) && m.B) bend += 1;
+
+        // Lever LKL: Raises 4 & 8 by +1 (E -> F)
+        if ((stringNum === 4 || stringNum === 8) && m.LKL) bend += 1;
+
+        // Lever LKR: Lowers 4 & 8 by -1 (E -> D#)
+        if ((stringNum === 4 || stringNum === 8) && m.LKR) bend -= 1;
+
+        // Lever RKR: Lowers 2 by -1 (D# -> D) and 9 by -1 (D -> C#)
+        if ((stringNum === 2 || stringNum === 9) && m.RKR) bend -= 1;
+
+        return bend;
+      }
+
+      /**
+       * Computes exact frequency in Hz for a string (index 0..9) at current bar & pedal state.
+       */
+      function getStringFrequency(index) {
+        const s = STRINGS[index];
+        const bend = getStringBendSemitones(s.num);
+        return s.freq * Math.pow(2, (state.barFret + bend) / 12);
+      }
+
+      /**
+       * Returns current note name (e.g. "C#4") for string index 0..9.
+       */
+      function getStringNoteName(index) {
+        const s = STRINGS[index];
+        const bend = getStringBendSemitones(s.num);
+        const midi = Math.round(s.midi + state.barFret + bend);
+        const name = NOTE_NAMES[((midi % 12) + 12) % 12];
+        const oct = Math.floor(midi / 12) - 1;
+        return name + oct;
+      }
+
+      /**
+       * Detects the chord formed by active ringing strings (or core E9 strings 4,5,6,8).
+       */
+      function detectChord() {
+        const now = performance.now();
+        const ringingIndices = [];
+        for (let i = 0; i < 10; i++) {
+          if (state.stringVis[i].ringing && (now - state.stringVis[i].lastPluckTime) < 6000) {
+            ringingIndices.push(i);
+          }
+        }
+        // Use ringing strings if at least 2 are sounding, otherwise inspect core E9 grip (4,5,6,8)
+        const targetIndices = ringingIndices.length >= 2 ? ringingIndices : [3, 4, 5, 7];
+        const pitchClasses = new Set();
+
+        for (const idx of targetIndices) {
+          const s = STRINGS[idx];
+          const bend = getStringBendSemitones(s.num);
+          const midi = Math.round(s.midi + state.barFret + bend);
+          pitchClasses.add(((midi % 12) + 12) % 12);
+        }
+
+        const pcs = Array.from(pitchClasses);
+        if (pcs.length === 0) return '—';
+        if (pcs.length === 1) return NOTE_NAMES[pcs[0]];
+
+        // Chord templates (intervals from root)
+        const templates = [
+          { name: 'Major', intervals: [0, 4, 7], weight: 10 },
+          { name: 'Minor', intervals: [0, 3, 7], weight: 10 },
+          { name: '7',     intervals: [0, 4, 7, 10], weight: 11 },
+          { name: 'Maj7',  intervals: [0, 4, 7, 11], weight: 11 },
+          { name: 'm7',    intervals: [0, 3, 7, 10], weight: 11 },
+          { name: '6',     intervals: [0, 4, 7, 9],  weight: 9 },
+          { name: 'add9',  intervals: [0, 2, 4, 7],  weight: 9 },
+          { name: 'sus4',  intervals: [0, 5, 7],     weight: 8 },
+          { name: 'sus2',  intervals: [0, 2, 7],     weight: 7 },
+          { name: 'dim',   intervals: [0, 3, 6],     weight: 8 },
+          { name: 'aug',   intervals: [0, 4, 8],     weight: 8 },
+          { name: '5',     intervals: [0, 7],        weight: 4 }
+        ];
+
+        let bestMatch = null;
+        let bestScore = -999;
+
+        for (const root of pcs) {
+          const rel = pcs.map(p => (p - root + 12) % 12);
+          for (const tpl of templates) {
+            const matched = tpl.intervals.filter(iv => rel.includes(iv)).length;
+            const missing = tpl.intervals.length - matched;
+            const extra = rel.length - matched;
+            if (matched >= Math.min(2, tpl.intervals.length) && missing === 0) {
+              const score = tpl.weight * 2 - extra * 2.5 + (root === ((4 + Math.round(state.barFret)) % 12) ? 0.5 : 0);
+              if (score > bestScore) {
+                bestScore = score;
+                bestMatch = `${NOTE_NAMES[root]} ${tpl.name}`;
+              }
+            }
+          }
+        }
+
+        if (bestMatch) return bestMatch;
+        return pcs.map(p => NOTE_NAMES[p]).slice(0, 4).join(' · ');
+      }
+
+      // =======================================================================
+      // 2. WEB AUDIO SYNTHESIS ENGINE (AUTHENTIC ELECTRIC PEDAL STEEL)
+      // =======================================================================
+      class PedalSteelAudioEngine {
+        constructor() {
+          this.ctx = null;
+          this.initialized = false;
+          this.voices = new Array(10).fill(null);
+
+          // Shared PeriodicWaves for magnetic single-coil steel guitar timbre
+          this.bodyWave = null;
+          this.chimeWave = null;
+          this.noiseBuffer = null;
+
+          // Master chain nodes
+          this.prePedalBus = null;
+          this.volumePedalGain = null;
+          this.autoSwellGain = null;
+          this.preampDriveGain = null;
+          this.tubeShaper = null;
+          this.lowBodyEQ = null;
+          this.chimePresenceEQ = null;
+          this.cabLowpass = null;
+          this.dryGain = null;
+          this.reverbSend = null;
+          this.reverbConvolver = null;
+          this.delaySend = null;
+          this.delayL = null;
+          this.delayR = null;
+          this.delayFeedbackL = null;
+          this.delayFeedbackR = null;
+          this.delayTone = null;
+          this.masterGain = null;
+          this.limiter = null;
+
+          // Global singing bar vibrato LFO
+          this.vibratoLFO = null;
+          this.vibratoDepthGain = null;
+        }
+
+        init() {
+          if (this.initialized) {
+            if (this.ctx.state === 'suspended') this.ctx.resume();
+            this._syncAudioStatusUI();
+            return;
+          }
+          try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioCtx();
+            this.ctx.onstatechange = () => this._syncAudioStatusUI();
+
+            this._createPeriodicWaves();
+            this._createNoiseBuffer();
+            this._buildMasterAmpChain();
+            this._buildVibratoLFO();
+
+            this.initialized = true;
+            this.updateAllParams();
+            if (this.ctx.state === 'suspended') this.ctx.resume();
+            this._syncAudioStatusUI();
+          } catch (err) {
+            console.error('Web Audio initialization error:', err);
+          }
+        }
+
+        _syncAudioStatusUI() {
+          const isRunning = this.ctx && this.ctx.state === 'running';
+          const lamp = document.getElementById('jewelLamp');
+          if (lamp) lamp.classList.toggle('standby', !isRunning);
+          const pill = document.getElementById('audioUnlockPill');
+          if (pill) pill.classList.toggle('hidden', !!isRunning);
+          const badge = document.getElementById('statusBadge');
+          if (badge) {
+            badge.textContent = isRunning ? 'Tubes Warm • Multi-Touch Active' : 'Tap anywhere to ignite tubes';
+          }
+        }
+
+        /**
+         * Custom harmonic profiles modeled on a high-inductance single-coil pedal steel pickup.
+         * Body wave: strong fundamental, rich 2nd/3rd, warm 4th/5th.
+         * Chime wave: glassy upper harmonics (2nd–10th) that decay faster via per-voice filter.
+         */
+        _createPeriodicWaves() {
+          const bodyReal = new Float32Array(12);
+          const bodyImag = new Float32Array([
+            0.0,   // DC
+            1.00,  // 1st (fundamental)
+            0.56,  // 2nd (octave warmth)
+            0.34,  // 3rd (woody/bell fifth)
+            0.16,  // 4th
+            0.08,  // 5th
+            0.04,  // 6th
+            0.02,  // 7th
+            0.01,  // 8th
+            0.005, // 9th
+            0.003, // 10th
+            0.001  // 11th
+          ]);
+          this.bodyWave = this.ctx.createPeriodicWave(bodyReal, bodyImag, { disableNormalization: false });
+
+          const chimeReal = new Float32Array(16);
+          const chimeImag = new Float32Array([
+            0.0,
+            0.35,  // 1st
+            0.78,  // 2nd
+            0.62,  // 3rd
+            0.48,  // 4th (glassy shimmer)
+            0.34,  // 5th
+            0.25,  // 6th
+            0.18,  // 7th
+            0.12,  // 8th
+            0.08,  // 9th
+            0.05,  // 10th
+            0.035, // 11th
+            0.02,  // 12th
+            0.012, // 13th
+            0.008, // 14th
+            0.004  // 15th
+          ]);
+          this.chimeWave = this.ctx.createPeriodicWave(chimeReal, chimeImag, { disableNormalization: false });
+        }
+
+        _createNoiseBuffer() {
+          const length = Math.floor(this.ctx.sampleRate * 0.12);
+          const buffer = this.ctx.createBuffer(1, length, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.018));
+          }
+          this.noiseBuffer = buffer;
+        }
+
+        /**
+         * Procedurally generates a lush stereo spring + Nashville studio hall impulse response.
+         */
+        _createSpringReverbIR() {
+          const rate = this.ctx.sampleRate;
+          const duration = 3.1;
+          const length = Math.floor(rate * duration);
+          const impulse = this.ctx.createBuffer(2, length, rate);
+
+          for (let ch = 0; ch < 2; ch++) {
+            const data = impulse.getChannelData(ch);
+            let lp = 0;
+            for (let i = 0; i < length; i++) {
+              const t = i / rate;
+              // Early spring metallic flutter + smooth hall tail
+              const env = Math.pow(1 - i / length, 2.7) * Math.exp(-t * 1.15);
+              const springMod = 1 + 0.18 * Math.sin(t * (ch === 0 ? 195 : 211));
+              const white = (Math.random() * 2 - 1);
+              // Gentle one-pole lowpass so reverb tail is warm and never harsh
+              lp = lp * 0.72 + white * 0.28;
+              data[i] = lp * env * springMod * 0.65;
+            }
+          }
+          return impulse;
+        }
+
+        /**
+         * Asymmetric soft-clipping curve mimicking a warm 12AX7 / 6L6 Fender Twin tube stage.
+         */
+        _makeTubeCurve(amount) {
+          const n = 2048;
+          const curve = new Float32Array(n);
+          const k = 1 + amount * 14;
+          for (let i = 0; i < n; i++) {
+            const x = (i * 2) / n - 1;
+            // Slight asymmetry adds warm even-order tube harmonics
+            const shifted = x + 0.04 * amount;
+            curve[i] = Math.tanh(shifted * k) / Math.tanh(k);
+          }
+          return curve;
+        }
+
+        _buildMasterAmpChain() {
+          const ctx = this.ctx;
+
+          // 1. Pre-pedal voice mix bus
+          this.prePedalBus = ctx.createGain();
+          this.prePedalBus.gain.value = 0.75;
+
+          // 2. Volume Pedal (BEFORE reverb & delay so swells bloom into tails!)
+          this.volumePedalGain = ctx.createGain();
+          this.volumePedalGain.gain.value = this._pedalCurve(state.volumePedal);
+
+          // 3. Auto-Swell Envelope Gain (also before reverb & delay)
+          this.autoSwellGain = ctx.createGain();
+          this.autoSwellGain.gain.value = 1.0;
+
+          // 4. Tube Preamp Stage
+          this.preampDriveGain = ctx.createGain();
+          this.preampDriveGain.gain.value = 1.25;
+
+          this.tubeShaper = ctx.createWaveShaper();
+          this.tubeShaper.oversample = '2x';
+          this.tubeShaper.curve = this._makeTubeCurve(state.params.tubeWarmth);
+
+          // 5. Twin Reverb / Nashville 112 Tone Stack & Speaker Cabinet
+          this.lowBodyEQ = ctx.createBiquadFilter();
+          this.lowBodyEQ.type = 'lowshelf';
+          this.lowBodyEQ.frequency.value = 210;
+          this.lowBodyEQ.gain.value = 2.5;
+
+          this.chimePresenceEQ = ctx.createBiquadFilter();
+          this.chimePresenceEQ.type = 'peaking';
+          this.chimePresenceEQ.frequency.value = 2650;
+          this.chimePresenceEQ.Q.value = 1.1;
+          this.chimePresenceEQ.gain.value = 3.0;
+
+          this.cabLowpass = ctx.createBiquadFilter();
+          this.cabLowpass.type = 'lowpass';
+          this.cabLowpass.frequency.value = 5200;
+          this.cabLowpass.Q.value = 0.7;
+
+          // Connect pre-FX amp path
+          this.prePedalBus.connect(this.volumePedalGain);
+          this.volumePedalGain.connect(this.autoSwellGain);
+          this.autoSwellGain.connect(this.preampDriveGain);
+          this.preampDriveGain.connect(this.tubeShaper);
+          this.tubeShaper.connect(this.lowBodyEQ);
+          this.lowBodyEQ.connect(this.chimePresenceEQ);
+          this.chimePresenceEQ.connect(this.cabLowpass);
+
+          // 6. Master Output + Soft Compressor/Limiter
+          this.masterGain = ctx.createGain();
+          this.masterGain.gain.value = state.params.ampVolume;
+
+          this.limiter = ctx.createDynamicsCompressor();
+          this.limiter.threshold.value = -8;
+          this.limiter.knee.value = 12;
+          this.limiter.ratio.value = 6;
+          this.limiter.attack.value = 0.005;
+          this.limiter.release.value = 0.14;
+
+          this.dryGain = ctx.createGain();
+          this.dryGain.gain.value = 0.88;
+          this.cabLowpass.connect(this.dryGain);
+          this.dryGain.connect(this.masterGain);
+
+          // 7. Lush Spring / Hall Convolution Reverb
+          this.reverbSend = ctx.createGain();
+          this.reverbSend.gain.value = state.params.reverb * 0.85;
+          this.reverbConvolver = ctx.createConvolver();
+          this.reverbConvolver.buffer = this._createSpringReverbIR();
+
+          this.cabLowpass.connect(this.reverbSend);
+          this.reverbSend.connect(this.reverbConvolver);
+          this.reverbConvolver.connect(this.masterGain);
+
+          // 8. Stereo Analog Tape Delay
+          this.delaySend = ctx.createGain();
+          this.delaySend.gain.value = state.params.delay * 0.55;
+
+          this.delayL = ctx.createDelay(1.5);
+          this.delayR = ctx.createDelay(1.5);
+          this.delayL.delayTime.value = 0.345;
+          this.delayR.delayTime.value = 0.475;
+
+          this.delayFeedbackL = ctx.createGain();
+          this.delayFeedbackR = ctx.createGain();
+          this.delayFeedbackL.gain.value = 0.36;
+          this.delayFeedbackR.gain.value = 0.34;
+
+          this.delayTone = ctx.createBiquadFilter();
+          this.delayTone.type = 'lowpass';
+          this.delayTone.frequency.value = 2100;
+
+          const merger = ctx.createChannelMerger(2);
+
+          this.cabLowpass.connect(this.delaySend);
+          this.delaySend.connect(this.delayTone);
+
+          this.delayTone.connect(this.delayL);
+          this.delayTone.connect(this.delayR);
+
+          // Gentle cross-feedback for spacious stereo ping-pong
+          this.delayL.connect(this.delayFeedbackL);
+          this.delayFeedbackL.connect(this.delayR);
+          this.delayR.connect(this.delayFeedbackR);
+          this.delayFeedbackR.connect(this.delayL);
+
+          this.delayL.connect(merger, 0, 0);
+          this.delayR.connect(merger, 0, 1);
+          merger.connect(this.masterGain);
+
+          // Final master connection
+          this.masterGain.connect(this.limiter);
+          this.limiter.connect(ctx.destination);
+        }
+
+        _buildVibratoLFO() {
+          const ctx = this.ctx;
+          this.vibratoLFO = ctx.createOscillator();
+          this.vibratoLFO.type = 'sine';
+          this.vibratoLFO.frequency.value = 5.1;
+
+          this.vibratoDepthGain = ctx.createGain();
+          this.vibratoDepthGain.gain.value = 7.5; // cents
+
+          this.vibratoLFO.connect(this.vibratoDepthGain);
+          this.vibratoLFO.start();
+        }
+
+        // Musical logarithmic taper for a real Goodrich volume pedal
+        _pedalCurve(val) {
+          if (val <= 0.005) return 0.0001;
+          return Math.pow(val, 2.15);
+        }
+
+        updateVolumePedal(val, smoothTime = 0.025) {
+          if (!this.initialized) return;
+          const now = this.ctx.currentTime;
+          this.volumePedalGain.gain.setTargetAtTime(this._pedalCurve(val), now, smoothTime);
+        }
+
+        triggerAutoSwell() {
+          if (!this.initialized || !state.autoSwell) return;
+          const now = this.ctx.currentTime;
+          const g = this.autoSwellGain.gain;
+          g.cancelScheduledValues(now);
+          g.setValueAtTime(0.03, now);
+          g.exponentialRampToValueAtTime(1.0, now + 0.34);
+        }
+
+        updateAllParams() {
+          if (!this.initialized) return;
+          const now = this.ctx.currentTime;
+          const p = state.params;
+
+          this.masterGain.gain.setTargetAtTime(p.ampVolume * 0.95, now, 0.02);
+
+          // Tone/Chime sweeps both presence boost and cab brightness
+          this.chimePresenceEQ.gain.setTargetAtTime(-2 + p.toneChime * 8.5, now, 0.03);
+          this.cabLowpass.frequency.setTargetAtTime(2800 + p.toneChime * 3800, now, 0.03);
+
+          // Tube warmth drives preamp & updates soft-clipping curve
+          this.preampDriveGain.gain.setTargetAtTime(1.0 + p.tubeWarmth * 1.45, now, 0.03);
+          this.tubeShaper.curve = this._makeTubeCurve(p.tubeWarmth);
+
+          // Reverb & Delay wet levels
+          this.reverbSend.gain.setTargetAtTime(p.reverb * 0.95, now, 0.03);
+          this.delaySend.gain.setTargetAtTime(p.delay * 0.65, now, 0.03);
+          this.delayFeedbackL.gain.setTargetAtTime(0.20 + p.delay * 0.38, now, 0.03);
+          this.delayFeedbackR.gain.setTargetAtTime(0.18 + p.delay * 0.36, now, 0.03);
+
+          // Vibrato depth (in cents)
+          const vibCents = state.vibratoLevel === 0 ? 0 : (state.vibratoLevel === 1 ? 8.5 : 17.0);
+          this.vibratoDepthGain.gain.setTargetAtTime(vibCents, now, 0.05);
+        }
+
+        /**
+         * Plucks a single string (index 0..9) with authentic harmonic decay & pick transient.
+         */
+        pluckString(index, velocity = 0.85, skipAutoSwell = false) {
+          this.init();
+          const ctx = this.ctx;
+          const now = ctx.currentTime;
+
+          // Cleanly damp any previous voice on this exact string
+          if (this.voices[index]) {
+            this._releaseVoice(this.voices[index], 0.035);
+            this.voices[index] = null;
+          }
+
+          if (!skipAutoSwell && state.autoSwell) {
+            this.triggerAutoSwell();
+          }
+
+          const freq = getStringFrequency(index);
+          const s = STRINGS[index];
+
+          // Voice output envelope
+          const voiceGain = ctx.createGain();
+          voiceGain.gain.setValueAtTime(0.0001, now);
+          // Fast pluck onset, long singing steel-bar sustain (6.5s - 9.5s)
+          const sustainSec = s.wound ? 9.5 : 7.5;
+          const peakLevel = (0.20 + velocity * 0.14) * (s.wound ? 1.08 : 0.96);
+          voiceGain.gain.linearRampToValueAtTime(peakLevel, now + 0.012);
+          voiceGain.gain.exponentialRampToValueAtTime(peakLevel * 0.58, now + 1.2);
+          voiceGain.gain.exponentialRampToValueAtTime(0.0008, now + sustainSec);
+
+          // Body Oscillator (warm fundamental + lower harmonics)
+          const bodyOsc = ctx.createOscillator();
+          bodyOsc.setPeriodicWave(this.bodyWave);
+          bodyOsc.frequency.setValueAtTime(freq, now);
+
+          // Chime Oscillator (bright upper harmonics + subtle micro-detune)
+          const chimeOsc = ctx.createOscillator();
+          chimeOsc.setPeriodicWave(this.chimeWave);
+          chimeOsc.frequency.setValueAtTime(freq, now);
+          chimeOsc.detune.setValueAtTime((Math.random() - 0.5) * 2.2 + 1.1, now);
+
+          // Per-voice dynamic harmonic damping filter for Chime Osc
+          // (Real steel strings lose high harmonics quickly while the fundamental sings on)
+          const chimeFilter = ctx.createBiquadFilter();
+          chimeFilter.type = 'lowpass';
+          chimeFilter.Q.value = 1.2;
+          const startCut = Math.min(7200, freq * 11 + 1200);
+          const endCut = Math.min(2600, freq * 3.4 + 380);
+          chimeFilter.frequency.setValueAtTime(startCut, now);
+          chimeFilter.frequency.exponentialRampToValueAtTime(endCut, now + 1.45);
+
+          const chimeMix = ctx.createGain();
+          chimeMix.gain.value = 0.42;
+
+          // Connect global subtle vibrato LFO to both oscillators
+          this.vibratoDepthGain.connect(bodyOsc.detune);
+          this.vibratoDepthGain.connect(chimeOsc.detune);
+
+          bodyOsc.connect(voiceGain);
+          chimeOsc.connect(chimeFilter);
+          chimeFilter.connect(chimeMix);
+          chimeMix.connect(voiceGain);
+
+          // Metallic Fingerpick Transient Burst (filtered noise + short metallic ping)
+          const pickNoise = ctx.createBufferSource();
+          pickNoise.buffer = this.noiseBuffer;
+          const pickBand = ctx.createBiquadFilter();
+          pickBand.type = 'bandpass';
+          pickBand.frequency.value = Math.min(5200, freq * 6.5 + 1400);
+          pickBand.Q.value = 2.4;
+          const pickGain = ctx.createGain();
+          pickGain.gain.setValueAtTime(0.16 * velocity, now);
+          pickGain.gain.exponentialRampToValueAtTime(0.0005, now + 0.032);
+
+          pickNoise.connect(pickBand);
+          pickBand.connect(pickGain);
+          pickGain.connect(this.prePedalBus);
+
+          // Connect voice to Pre-Pedal Bus
+          voiceGain.connect(this.prePedalBus);
+
+          bodyOsc.start(now);
+          chimeOsc.start(now);
+          pickNoise.start(now);
+
+          const stopAt = now + sustainSec + 0.1;
+          bodyOsc.stop(stopAt);
+          chimeOsc.stop(stopAt);
+
+          const voiceObj = {
+            index,
+            bodyOsc,
+            chimeOsc,
+            voiceGain,
+            chimeFilter,
+            active: true,
+            stopTimeout: setTimeout(() => {
+              voiceObj.active = false;
+              if (this.voices[index] === voiceObj) {
+                this.voices[index] = null;
+                state.stringVis[index].ringing = false;
+              }
+            }, (sustainSec + 0.15) * 1000)
+          };
+
+          this.voices[index] = voiceObj;
+
+          // Trigger visual string vibration
+          const vis = state.stringVis[index];
+          vis.amp = 5.5 + velocity * 3.5;
+          vis.freqVis = 16 + (10 - index) * 2.2;
+          vis.lastPluckTime = performance.now();
+          vis.ringing = true;
+        }
+
+        _releaseVoice(voice, fadeSec = 0.06) {
+          if (!voice || !voice.active) return;
+          voice.active = false;
+          clearTimeout(voice.stopTimeout);
+          const now = this.ctx.currentTime;
+          try {
+            voice.voiceGain.gain.cancelScheduledValues(now);
+            voice.voiceGain.gain.setTargetAtTime(0.0001, now, fadeSec / 3);
+            voice.bodyOsc.stop(now + fadeSec + 0.05);
+            voice.chimeOsc.stop(now + fadeSec + 0.05);
+            this.vibratoDepthGain.disconnect(voice.bodyOsc.detune);
+            this.vibratoDepthGain.disconnect(voice.chimeOsc.detune);
+          } catch (_) { /* already stopped */ }
+        }
+
+        /**
+         * Smoothly updates pitches of all ringing strings (for bar glides & pedal bends).
+         * @param {number} timeConstant - AudioParam setTargetAtTime constant (~0.032 for crying pedals, ~0.012 for bar drag)
+         */
+        updateAllVoicePitches(timeConstant = 0.03) {
+          if (!this.initialized) return;
+          const now = this.ctx.currentTime;
+          for (let i = 0; i < 10; i++) {
+            const v = this.voices[i];
+            if (v && v.active) {
+              const freq = getStringFrequency(i);
+              v.bodyOsc.frequency.setTargetAtTime(freq, now, timeConstant);
+              v.chimeOsc.frequency.setTargetAtTime(freq, now, timeConstant);
+            }
+          }
+        }
+
+        /**
+         * Palm damp / mute all ringing strings smoothly.
+         */
+        dampAll() {
+          if (!this.initialized) return;
+          for (let i = 0; i < 10; i++) {
+            if (this.voices[i]) {
+              this._releaseVoice(this.voices[i], 0.08);
+              this.voices[i] = null;
+            }
+            state.stringVis[i].amp *= 0.12;
+            state.stringVis[i].ringing = false;
+          }
+        }
+      }
+
+      const audio = new PedalSteelAudioEngine();
+
+      // =======================================================================
+      // 2B. iOS SAFARI AUDIO UNLOCK & MULTI-TOUCH VISUAL DOTS
+      // =======================================================================
+      let iosAudioUnlocked = false;
+      const iosUnlockEl = document.getElementById('iosAudioUnlock');
+
+      function unlockIOSAudio() {
+        audio.init();
+        if (iosAudioUnlocked) return;
+        iosAudioUnlocked = true;
+        try {
+          if (iosUnlockEl) {
+            const playPromise = iosUnlockEl.play();
+            if (playPromise && typeof playPromise.then === 'function') {
+              playPromise.then(() => {
+                iosUnlockEl.pause();
+                iosUnlockEl.currentTime = 0;
+              }).catch(() => {});
+            }
+          }
+        } catch (_) { /* ignore autoplay guard */ }
+      }
+
+      // First touch or pointer gesture anywhere wakes Web Audio & iOS audio session
+      window.addEventListener('pointerdown', unlockIOSAudio, { passive: true });
+      window.addEventListener('touchstart', unlockIOSAudio, { passive: true });
+
+      const audioUnlockPill = document.getElementById('audioUnlockPill');
+      if (audioUnlockPill) {
+        audioUnlockPill.addEventListener('pointerdown', (e) => {
+          e.stopPropagation();
+          unlockIOSAudio();
+        });
+      }
+
+      // Dismissible portrait rotation banner
+      const dismissRotateBtn = document.getElementById('dismissRotateBtn');
+      const rotateBanner = document.getElementById('rotateBanner');
+      if (dismissRotateBtn && rotateBanner) {
+        dismissRotateBtn.addEventListener('click', () => {
+          rotateBanner.classList.remove('show-portrait');
+        });
+      }
+
+      // Visual glowing touch indicators per active pointerId
+      const touchOverlay = document.getElementById('touchOverlay');
+      const touchDots = new Map();
+
+      function showTouchDot(pointerId, x, y, type = 'bar') {
+        let dot = touchDots.get(pointerId);
+        if (!dot) {
+          dot = document.createElement('div');
+          dot.className = `touch-dot ${type === 'strum' ? 'strum' : ''}`;
+          touchOverlay.appendChild(dot);
+          touchDots.set(pointerId, dot);
+        }
+        dot.style.left = `${x}px`;
+        dot.style.top = `${y}px`;
+      }
+
+      function removeTouchDot(pointerId) {
+        const dot = touchDots.get(pointerId);
+        if (dot) {
+          dot.remove();
+          touchDots.delete(pointerId);
+        }
+      }
+
+      // =======================================================================
+      // 3. DOM CONSTRUCTION & VISUAL RENDERING (FRETBOARD, STRINGS CANVAS, UI)
+      // =======================================================================
+      const neckAssembly = document.getElementById('neckAssembly');
+      const stringLabelsCol = document.getElementById('stringLabelsCol');
+      const fretboardArea = document.getElementById('fretboardArea');
+      const fretsLayer = document.getElementById('fretsLayer');
+      const toneBarEl = document.getElementById('toneBar');
+      const pluckZone = document.getElementById('pluckZone');
+      const stringsCanvas = document.getElementById('stringsCanvas');
+      const ctx2d = stringsCanvas.getContext('2d');
+
+      const chordReadout = document.getElementById('chordReadout');
+      const barFretReadout = document.getElementById('barFretReadout');
+      const activePedalsReadout = document.getElementById('activePedalsReadout');
+
+      const stringNoteBadges = [];
+
+      /**
+       * Builds the 10 keyhead string labels (1..10) with live note readouts.
+       */
+      function buildStringLabels() {
+        stringLabelsCol.innerHTML = '';
+        stringNoteBadges.length = 0;
+
+        STRINGS.forEach((s, idx) => {
+          const row = document.createElement('button');
+          row.type = 'button';
+          row.className = 'w-full flex items-center justify-between px-1 py-0 rounded hover:bg-slate-900/20 active:bg-amber-500/30 transition text-left leading-none';
+          row.title = `Pluck String ${s.num} (Key ${s.key})`;
+
+          const numSpan = document.createElement('span');
+          numSpan.className = 'font-mono-tech text-[9px] sm:text-[10px] font-bold text-slate-900';
+          numSpan.textContent = s.num;
+
+          const noteSpan = document.createElement('span');
+          noteSpan.className = 'font-mono-tech text-[9px] sm:text-[10px] font-bold text-slate-800 bg-white/60 px-1 rounded';
+          noteSpan.textContent = s.note;
+
+          row.appendChild(numSpan);
+          row.appendChild(noteSpan);
+
+          row.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            unlockIOSAudio();
+            audio.pluckString(idx, 0.9);
+            updateReadouts();
+          });
+
+          stringLabelsCol.appendChild(row);
+          stringNoteBadges.push(noteSpan);
+        });
+      }
+
+      /**
+       * Builds the 15-fret Sho-Bud style fretboard with fret lines, chord names,
+       * fret numbers, and pearloid inlay markers.
+       */
+      function buildFretboard() {
+        fretsLayer.innerHTML = '';
+        const markerFrets = new Set([3, 5, 7, 9, 12, 15]);
+
+        for (let f = 0; f <= MAX_FRET; f++) {
+          const pct = (f / MAX_FRET) * 100;
+
+          // Fret line
+          const line = document.createElement('div');
+          line.className = 'absolute top-0 bottom-0';
+          line.style.left = `${pct}%`;
+          line.style.width = f === 0 ? '3px' : '1.5px';
+          line.style.background = f === 0
+            ? 'linear-gradient(180deg, #f8fafc, #94a3b8, #f8fafc)'
+            : 'linear-gradient(180deg, rgba(226,232,240,0.45), rgba(148,163,184,0.8), rgba(226,232,240,0.45))';
+          fretsLayer.appendChild(line);
+
+          // Top fret number & open chord label
+          const label = document.createElement('div');
+          label.className = 'absolute top-0.5 flex flex-col items-center -translate-x-1/2';
+          label.style.left = `${pct}%`;
+          if (f === 0) label.style.transform = 'translateX(4px)';
+          if (f === MAX_FRET) label.style.transform = 'translateX(-115%)';
+
+          const chordTag = document.createElement('span');
+          chordTag.className = 'font-mono-tech text-[9px] sm:text-[10px] font-bold text-amber-300/90 leading-none';
+          chordTag.textContent = FRET_CHORD_LABELS[f] || '';
+
+          const numTag = document.createElement('span');
+          numTag.className = 'font-mono-tech text-[8px] text-slate-400 leading-none mt-0.5';
+          numTag.textContent = f;
+
+          label.appendChild(chordTag);
+          label.appendChild(numTag);
+          fretsLayer.appendChild(label);
+
+          // Pearloid inlay markers
+          if (markerFrets.has(f)) {
+            const centerPct = ((f - 0.5) / MAX_FRET) * 100;
+            if (f === 12) {
+              [34, 66].forEach(topPct => {
+                const dot = document.createElement('div');
+                dot.className = 'pearl-marker absolute w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-80';
+                dot.style.left = `${centerPct}%`;
+                dot.style.top = `${topPct}%`;
+                fretsLayer.appendChild(dot);
+              });
+            } else {
+              const dot = document.createElement('div');
+              dot.className = 'pearl-marker absolute w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-75';
+              dot.style.left = `${centerPct}%`;
+              dot.style.top = '52%';
+              fretsLayer.appendChild(dot);
+            }
+          }
+        }
+      }
+
+      /**
+       * Resizes the high-DPI canvas overlay to match the neck assembly dimensions.
+       */
+      function resizeStringsCanvas() {
+        const rect = neckAssembly.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        stringsCanvas.width = Math.max(1, Math.floor(rect.width * dpr));
+        stringsCanvas.height = Math.max(1, Math.floor(rect.height * dpr));
+        stringsCanvas.style.width = `${rect.width}px`;
+        stringsCanvas.style.height = `${rect.height}px`;
+        ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      /**
+       * Positions the gleaming chrome tone bar along the fretboard.
+       */
+      function updateToneBarPosition() {
+        const pct = (state.barFret / MAX_FRET) * 100;
+        toneBarEl.style.left = `${pct}%`;
+      }
+
+      /**
+       * Updates the LED chord/fret readouts, active pedal list, and per-string note badges.
+       */
+      function updateReadouts() {
+        barFretReadout.textContent = `FRET ${state.barFret.toFixed(1)}`;
+        chordReadout.textContent = detectChord();
+
+        const engaged = Object.entries(state.mechs)
+          .filter(([, active]) => active)
+          .map(([k]) => k);
+        activePedalsReadout.textContent = engaged.length > 0
+          ? `Engaged: ${engaged.join(' + ')}`
+          : 'Open E9 Tuning';
+
+        for (let i = 0; i < 10; i++) {
+          const badge = stringNoteBadges[i];
+          if (!badge) continue;
+          const bend = getStringBendSemitones(STRINGS[i].num);
+          badge.textContent = getStringNoteName(i);
+          if (bend > 0) {
+            badge.style.background = 'rgba(245, 158, 11, 0.85)';
+            badge.style.color = '#0f172a';
+          } else if (bend < 0) {
+            badge.style.background = 'rgba(56, 189, 248, 0.85)';
+            badge.style.color = '#0f172a';
+          } else {
+            badge.style.background = 'rgba(255, 255, 255, 0.65)';
+            badge.style.color = '#1e293b';
+          }
+        }
+      }
+
+      // =======================================================================
+      // 4. 60FPS ANIMATION LOOP (BAR GLIDE + VIBRATING METALLIC STRINGS)
+      // =======================================================================
+      let lastFrameTime = performance.now();
+
+      function animateLoop(now) {
+        const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
+        lastFrameTime = now;
+
+        // 1. Smoothly glide Tone Bar toward target fret when not directly dragging
+        if (!state.isDraggingBar) {
+          const diff = state.targetBarFret - state.barFret;
+          if (Math.abs(diff) > 0.002) {
+            const speed = 3.5 + state.params.glideSpeed * 14;
+            state.barFret += diff * Math.min(1, dt * speed);
+            if (Math.abs(state.targetBarFret - state.barFret) < 0.003) {
+              state.barFret = state.targetBarFret;
+            }
+            updateToneBarPosition();
+            audio.updateAllVoicePitches(0.018);
+            updateReadouts();
+          }
+        }
+
+        // 2. Draw all 10 metallic vibrating strings on the high-DPI canvas
+        const neckRect = neckAssembly.getBoundingClientRect();
+        const fbRect = fretboardArea.getBoundingClientRect();
+        const w = neckRect.width;
+        const h = neckRect.height;
+
+        ctx2d.clearRect(0, 0, w, h);
+
+        const keyheadW = fbRect.left - neckRect.left;
+        const barX = keyheadW + (state.barFret / MAX_FRET) * fbRect.width;
+        const bridgeX = w - 12;
+        const topPad = 24;
+        const botPad = 14;
+        const usableH = Math.max(10, h - topPad - botPad);
+
+        for (let i = 0; i < 10; i++) {
+          const s = STRINGS[i];
+          const vis = state.stringVis[i];
+          const y = topPad + (i / 9) * usableH;
+
+          // Decay string vibration amplitude
+          if (vis.amp > 0.05) {
+            vis.amp *= Math.pow(0.32, dt);
+            vis.phase += dt * vis.freqVis * Math.PI * 2;
+          } else {
+            vis.amp = 0;
+          }
+
+          const bend = getStringBendSemitones(s.num);
+          const isVibrating = vis.amp > 0.15;
+
+          // Behind the tone bar (muted side: keyhead -> bar)
+          ctx2d.beginPath();
+          ctx2d.moveTo(keyheadW, y);
+          ctx2d.lineTo(barX, y);
+          ctx2d.lineWidth = s.gauge;
+          ctx2d.strokeStyle = 'rgba(148, 163, 184, 0.55)';
+          ctx2d.stroke();
+
+          // Active sounding length (bar -> changer bridge)
+          ctx2d.save();
+          ctx2d.beginPath();
+          const activeLen = Math.max(1, bridgeX - barX);
+
+          if (isVibrating) {
+            const segments = 28;
+            ctx2d.moveTo(barX, y);
+            for (let seg = 1; seg <= segments; seg++) {
+              const t = seg / segments;
+              const px = barX + t * activeLen;
+              const env = Math.sin(t * Math.PI);
+              const disp = Math.sin(vis.phase + t * Math.PI) * vis.amp * env;
+              ctx2d.lineTo(px, y + disp);
+            }
+            ctx2d.shadowColor = bend !== 0 ? 'rgba(56, 189, 248, 0.85)' : 'rgba(251, 191, 36, 0.85)';
+            ctx2d.shadowBlur = 6 + vis.amp * 1.4;
+          } else {
+            ctx2d.moveTo(barX, y);
+            ctx2d.lineTo(bridgeX, y);
+          }
+
+          // Metallic string gradient (wound strings slightly warmer bronze/nickel)
+          const grad = ctx2d.createLinearGradient(0, y - s.gauge, 0, y + s.gauge);
+          if (isVibrating) {
+            grad.addColorStop(0, '#fef3c7');
+            grad.addColorStop(0.5, bend !== 0 ? '#7dd3fc' : '#fbbf24');
+            grad.addColorStop(1, '#92400e');
+          } else if (s.wound) {
+            grad.addColorStop(0, '#e2e8f0');
+            grad.addColorStop(0.5, '#cbd5e1');
+            grad.addColorStop(1, '#64748b');
+          } else {
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.5, '#cbd5e1');
+            grad.addColorStop(1, '#475569');
+          }
+
+          ctx2d.lineWidth = s.gauge;
+          ctx2d.strokeStyle = grad;
+          ctx2d.stroke();
+          ctx2d.restore();
+        }
+
+        requestAnimationFrame(animateLoop);
+      }
+
+      // =======================================================================
+      // 5. TRUE MULTI-TOUCH INTERACTIVE CONTROLS (PER-POINTER ID TRACKING)
+      // =======================================================================
+
+      // --- A. Chrome Tone Bar & Fretboard (Dedicated barPointerId) ---
+      let barPointerId = null;
+      let barDownX = 0;
+      let barGrabbedDirectly = false;
+
+      function clientXToFret(clientX) {
+        const rect = fretboardArea.getBoundingClientRect();
+        const norm = (clientX - rect.left) / rect.width;
+        return Math.max(0, Math.min(MAX_FRET, norm * MAX_FRET));
+      }
+
+      fretboardArea.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        unlockIOSAudio();
+        // Only one finger owns the chrome tone bar at a time
+        if (barPointerId !== null) return;
+
+        barPointerId = e.pointerId;
+        barDownX = e.clientX;
+        barGrabbedDirectly = (e.target === toneBarEl || e.target.closest('#toneBar'));
+
+        try { fretboardArea.setPointerCapture(e.pointerId); } catch (_) {}
+
+        const rawFret = clientXToFret(e.clientX);
+        if (barGrabbedDirectly) {
+          state.isDraggingBar = true;
+          toneBarEl.classList.add('dragging');
+          state.barFret = rawFret;
+          state.targetBarFret = rawFret;
+          updateToneBarPosition();
+          audio.updateAllVoicePitches(0.012);
+          updateReadouts();
+        } else {
+          // Tap on fretboard glides smoothly to that fret (gentle snap to nearest fret)
+          const nearest = Math.round(rawFret);
+          state.targetBarFret = Math.abs(rawFret - nearest) < 0.35 ? nearest : rawFret;
+        }
+        showTouchDot(e.pointerId, e.clientX, e.clientY, 'bar');
+      });
+
+      fretboardArea.addEventListener('pointermove', (e) => {
+        if (e.pointerId !== barPointerId) return;
+        e.preventDefault();
+
+        // If user tapped the fretboard and starts sliding, engage direct continuous bar tracking
+        if (!state.isDraggingBar && Math.abs(e.clientX - barDownX) > 4) {
+          state.isDraggingBar = true;
+          toneBarEl.classList.add('dragging');
+        }
+
+        if (state.isDraggingBar) {
+          const fret = clientXToFret(e.clientX);
+          state.barFret = fret;
+          state.targetBarFret = fret;
+          updateToneBarPosition();
+          audio.updateAllVoicePitches(0.012);
+          updateReadouts();
+        }
+        showTouchDot(e.pointerId, e.clientX, e.clientY, 'bar');
+      });
+
+      function endBarPointer(e) {
+        if (e.pointerId !== barPointerId) return;
+        barPointerId = null;
+        state.isDraggingBar = false;
+        toneBarEl.classList.remove('dragging');
+        removeTouchDot(e.pointerId);
+        try { fretboardArea.releasePointerCapture(e.pointerId); } catch (_) {}
+      }
+      fretboardArea.addEventListener('pointerup', endBarPointer);
+      fretboardArea.addEventListener('pointercancel', endBarPointer);
+
+      // --- B. Pickup Zone Multi-Finger Pluck & Strum (Map of pointerId -> lastStringIndex) ---
+      const strumPointers = new Map();
+
+      function getStringIndexAtClientY(clientY) {
+        const rect = pluckZone.getBoundingClientRect();
+        const y = clientY - rect.top;
+        const topPad = 24;
+        const botPad = 14;
+        const usable = Math.max(10, rect.height - topPad - botPad);
+        const idx = Math.round(((y - topPad) / usable) * 9);
+        return Math.max(0, Math.min(9, idx));
+      }
+
+      pluckZone.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        unlockIOSAudio();
+        try { pluckZone.setPointerCapture(e.pointerId); } catch (_) {}
+        const idx = getStringIndexAtClientY(e.clientY);
+        strumPointers.set(e.pointerId, idx);
+        audio.pluckString(idx, 0.9);
+        updateReadouts();
+        showTouchDot(e.pointerId, e.clientX, e.clientY, 'strum');
+      });
+
+      pluckZone.addEventListener('pointermove', (e) => {
+        if (!strumPointers.has(e.pointerId)) return;
+        e.preventDefault();
+        const prevIdx = strumPointers.get(e.pointerId);
+        const idx = getStringIndexAtClientY(e.clientY);
+        if (idx !== prevIdx) {
+          const step = idx > prevIdx ? 1 : -1;
+          for (let s = prevIdx + step; step > 0 ? s <= idx : s >= idx; s += step) {
+            audio.pluckString(s, 0.78, true);
+          }
+          strumPointers.set(e.pointerId, idx);
+          updateReadouts();
+        }
+        showTouchDot(e.pointerId, e.clientX, e.clientY, 'strum');
+      });
+
+      function endStrumPointer(e) {
+        if (!strumPointers.has(e.pointerId)) return;
+        strumPointers.delete(e.pointerId);
+        removeTouchDot(e.pointerId);
+        try { pluckZone.releasePointerCapture(e.pointerId); } catch (_) {}
+      }
+      pluckZone.addEventListener('pointerup', endStrumPointer);
+      pluckZone.addEventListener('pointercancel', endStrumPointer);
+
+      // --- C. Nashville Grip Buttons (Multi-touch safe) ---
+      function triggerGrip(gripName) {
+        const nums = GRIPS[gripName];
+        if (!nums) return;
+        unlockIOSAudio();
+
+        const btn = document.querySelector(`[data-grip="${gripName}"]`);
+        if (btn) {
+          btn.classList.add('flash');
+          setTimeout(() => btn.classList.remove('flash'), 160);
+        }
+
+        if (state.autoSwell) {
+          audio.triggerAutoSwell();
+        }
+
+        const isStrum = gripName === 'strum';
+        nums.forEach((strNum, i) => {
+          const delayMs = isStrum ? i * 32 : i * 11;
+          setTimeout(() => {
+            audio.pluckString(strNum - 1, isStrum ? 0.78 : 0.88, true);
+            updateReadouts();
+          }, delayMs);
+        });
+      }
+
+      document.querySelectorAll('[data-grip]').forEach(btn => {
+        btn.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          triggerGrip(btn.dataset.grip);
+        });
+      });
+
+      document.getElementById('muteBtn').addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        audio.dampAll();
+        updateReadouts();
+      });
+
+      // --- D. Pedals & Knee Levers (Independent Multi-Touch Sets + Keyboard + Latch) ---
+      const mechPointers = { A: new Set(), B: new Set(), C: new Set(), LKL: new Set(), LKR: new Set(), RKR: new Set() };
+      const mechKeys = { A: false, B: false, C: false, LKL: false, LKR: false, RKR: false };
+      const mechLatched = { A: false, B: false, C: false, LKL: false, LKR: false, RKR: false };
+
+      function applyMechState(mechKey, active) {
+        if (state.mechs[mechKey] === active) return;
+        state.mechs[mechKey] = active;
+        const el = document.querySelector(`[data-mech="${mechKey}"]`);
+        if (el) {
+          el.classList.toggle('active', active);
+          const pLed = el.querySelector('.pedal-led');
+          if (pLed) {
+            pLed.style.background = active ? '#f59e0b' : '#0f172a';
+            pLed.style.boxShadow = active ? '0 0 8px #f59e0b' : 'none';
+          }
+          const lLed = el.querySelector('.lever-led');
+          if (lLed) {
+            lLed.style.background = active ? '#38bdf8' : '#020617';
+            lLed.style.boxShadow = active ? '0 0 8px #38bdf8' : 'none';
+          }
+        }
+        // Smooth mechanical steel changer glide (~55ms)
+        audio.updateAllVoicePitches(0.025);
+        updateReadouts();
+      }
+
+      function syncMech(mechKey) {
+        const active = state.latchMode
+          ? mechLatched[mechKey]
+          : (mechPointers[mechKey].size > 0 || mechKeys[mechKey]);
+        applyMechState(mechKey, active);
+      }
+
+      // Used by automated demo player
+      function setMech(mechKey, active) {
+        mechLatched[mechKey] = active;
+        applyMechState(mechKey, active);
+      }
+
+      document.querySelectorAll('[data-mech]').forEach(btn => {
+        const mechKey = btn.dataset.mech;
+        btn.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          unlockIOSAudio();
+          if (state.latchMode) {
+            mechLatched[mechKey] = !mechLatched[mechKey];
+            syncMech(mechKey);
+          } else {
+            try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+            mechPointers[mechKey].add(e.pointerId);
+            syncMech(mechKey);
+          }
+        });
+
+        const releaseMechPointer = (e) => {
+          if (mechPointers[mechKey].has(e.pointerId)) {
+            mechPointers[mechKey].delete(e.pointerId);
+            syncMech(mechKey);
+            try { btn.releasePointerCapture(e.pointerId); } catch (_) {}
+          }
+        };
+        btn.addEventListener('pointerup', releaseMechPointer);
+        btn.addEventListener('pointercancel', releaseMechPointer);
+      });
+
+      document.getElementById('latchModeBtn').addEventListener('click', () => {
+        state.latchMode = !state.latchMode;
+        document.getElementById('latchModeText').textContent = state.latchMode ? 'Latch' : 'Momentary';
+        // Sync all mechanisms cleanly when switching modes
+        Object.keys(state.mechs).forEach(m => {
+          if (!state.latchMode) mechLatched[m] = false;
+          syncMech(m);
+        });
+      });
+
+      // --- E. Volume Pedal Treadle (Dedicated volPointerId) ---
+      const volPedalTrack = document.getElementById('volPedalTrack');
+      const volPedalFill = document.getElementById('volPedalFill');
+      const volTreadle = document.getElementById('volTreadle');
+      const volPedalReadout = document.getElementById('volPedalReadout');
+      let volPointerId = null;
+
+      function setVolumePedal(val, smoothTime = 0.025) {
+        state.volumePedal = Math.max(0, Math.min(1, val));
+        const pct = Math.round(state.volumePedal * 100);
+        volPedalReadout.textContent = `${pct}%`;
+        volPedalFill.style.height = `${pct}%`;
+        // Dynamically compute travel inside track bounds for any screen size
+        const trackH = volPedalTrack.clientHeight || 96;
+        const treadleH = volTreadle.offsetHeight || 32;
+        const pad = 4;
+        const travel = Math.max(8, trackH - treadleH - pad * 2);
+        const bottomPx = pad + state.volumePedal * travel;
+        volTreadle.style.bottom = `${bottomPx}px`;
+        audio.updateVolumePedal(state.volumePedal, smoothTime);
+      }
+
+      function updateVolFromPointer(clientY) {
+        const rect = volPedalTrack.getBoundingClientRect();
+        const norm = 1 - (clientY - rect.top) / Math.max(1, rect.height);
+        setVolumePedal(norm, 0.02);
+      }
+
+      volPedalTrack.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        unlockIOSAudio();
+        if (volPointerId !== null) return;
+        volPointerId = e.pointerId;
+        try { volPedalTrack.setPointerCapture(e.pointerId); } catch (_) {}
+        updateVolFromPointer(e.clientY);
+      });
+      volPedalTrack.addEventListener('pointermove', (e) => {
+        if (e.pointerId !== volPointerId) return;
+        e.preventDefault();
+        updateVolFromPointer(e.clientY);
+      });
+      const endVolPointer = (e) => {
+        if (e.pointerId !== volPointerId) return;
+        volPointerId = null;
+        try { volPedalTrack.releasePointerCapture(e.pointerId); } catch (_) {}
+      };
+      volPedalTrack.addEventListener('pointerup', endVolPointer);
+      volPedalTrack.addEventListener('pointercancel', endVolPointer);
+
+      // Mouse wheel anywhere on volume pedal (or with Shift anywhere) swells volume
+      window.addEventListener('wheel', (e) => {
+        if (e.target.closest('#volPedalTrack') || e.shiftKey) {
+          e.preventDefault();
+          unlockIOSAudio();
+          const delta = -Math.sign(e.deltaY) * 0.06;
+          setVolumePedal(state.volumePedal + delta, 0.03);
+        }
+      }, { passive: false });
+
+      // --- F. Vintage Rotary Amp Knobs (Per-knob pointerId tracking) ---
+      function renderKnob(knobEl, val) {
+        const min = parseFloat(knobEl.dataset.min);
+        const max = parseFloat(knobEl.dataset.max);
+        const norm = (val - min) / (max - min);
+        const deg = -135 + norm * 270;
+        const cap = knobEl.querySelector('.knob-cap');
+        const valText = knobEl.querySelector('.knob-val');
+        cap.style.transform = `rotate(${deg}deg)`;
+        valText.textContent = `${Math.round(norm * 100)}%`;
+      }
+
+      document.querySelectorAll('.knob-wrap').forEach(knobEl => {
+        const param = knobEl.dataset.param;
+        const defVal = parseFloat(knobEl.dataset.default);
+        renderKnob(knobEl, state.params[param]);
+
+        let activePointerId = null;
+        let startY = 0;
+        let startVal = 0;
+
+        knobEl.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          unlockIOSAudio();
+          if (activePointerId !== null) return;
+          activePointerId = e.pointerId;
+          startY = e.clientY;
+          startVal = state.params[param];
+          knobEl.classList.add('dragging');
+          try { knobEl.setPointerCapture(e.pointerId); } catch (_) {}
+        });
+
+        knobEl.addEventListener('pointermove', (e) => {
+          if (e.pointerId !== activePointerId) return;
+          const dy = startY - e.clientY;
+          const next = Math.max(0, Math.min(1, startVal + dy / 140));
+          state.params[param] = next;
+          renderKnob(knobEl, next);
+          audio.updateAllParams();
+        });
+
+        const endDrag = (e) => {
+          if (e.pointerId !== activePointerId) return;
+          activePointerId = null;
+          knobEl.classList.remove('dragging');
+          try { knobEl.releasePointerCapture(e.pointerId); } catch (_) {}
+        };
+        knobEl.addEventListener('pointerup', endDrag);
+        knobEl.addEventListener('pointercancel', endDrag);
+
+        knobEl.addEventListener('dblclick', () => {
+          state.params[param] = defVal;
+          renderKnob(knobEl, defVal);
+          audio.updateAllParams();
+        });
+      });
+
+      // --- G. Auto-Swell, Vibrato & Help Toggles ---
+      const autoSwellBtn = document.getElementById('autoSwellBtn');
+      autoSwellBtn.addEventListener('click', () => {
+        state.autoSwell = !state.autoSwell;
+        autoSwellBtn.textContent = `Auto-Swell: ${state.autoSwell ? 'ON' : 'OFF'}`;
+        autoSwellBtn.className = state.autoSwell
+          ? 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm'
+          : 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-slate-800 border-slate-600 text-slate-400';
+      });
+
+      const vibratoBtn = document.getElementById('vibratoBtn');
+      const vibLabels = ['OFF', 'MED', 'LUSH'];
+      vibratoBtn.addEventListener('click', () => {
+        state.vibratoLevel = (state.vibratoLevel + 1) % 3;
+        vibratoBtn.textContent = `Vibrato: ${vibLabels[state.vibratoLevel]}`;
+        vibratoBtn.className = state.vibratoLevel > 0
+          ? 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-sky-500/20 border-sky-400 text-sky-300'
+          : 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-slate-800 border-slate-600 text-slate-400';
+        audio.updateAllParams();
+      });
+
+      const helpDrawer = document.getElementById('helpDrawer');
+      document.getElementById('toggleHelpBtn').addEventListener('click', () => {
+        helpDrawer.classList.toggle('hidden');
+      });
+
+      // --- H. Full Keyboard Controls ---
+      const KEY_TO_MECH = {
+        'a': 'A',
+        's': 'B',
+        'd': 'C',
+        'z': 'LKL',
+        'x': 'LKR',
+        'c': 'RKR'
+      };
+      const KEY_TO_GRIP = {
+        'q': 'high',
+        'w': 'mid',
+        'e': 'warm',
+        'r': 'low'
+      };
+
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        const k = e.key.toLowerCase();
+
+        // String plucks 1..9, 0
+        if (/^[0-9]$/.test(k)) {
+          if (e.repeat) return;
+          const idx = k === '0' ? 9 : parseInt(k, 10) - 1;
+          audio.pluckString(idx, 0.9);
+          updateReadouts();
+          return;
+        }
+
+        // Grips Q, W, E, R
+        if (KEY_TO_GRIP[k]) {
+          if (e.repeat) return;
+          triggerGrip(KEY_TO_GRIP[k]);
+          return;
+        }
+
+        // Pedals & Knee Levers
+        if (KEY_TO_MECH[k]) {
+          if (e.repeat) return;
+          unlockIOSAudio();
+          const mech = KEY_TO_MECH[k];
+          if (state.latchMode) {
+            mechLatched[mech] = !mechLatched[mech];
+          } else {
+            mechKeys[mech] = true;
+          }
+          syncMech(mech);
+          return;
+        }
+
+        // Tone Bar Slide (Left / Right)
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          audio.init();
+          const step = e.shiftKey ? 0.25 : 1;
+          state.targetBarFret = Math.min(MAX_FRET, Math.round((state.targetBarFret + step) * 4) / 4);
+          return;
+        }
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          audio.init();
+          const step = e.shiftKey ? 0.25 : 1;
+          state.targetBarFret = Math.max(0, Math.round((state.targetBarFret - step) * 4) / 4);
+          return;
+        }
+
+        // Volume Pedal Swell (Up / Down)
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          audio.init();
+          setVolumePedal(state.volumePedal + 0.08, 0.03);
+          return;
+        }
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          audio.init();
+          setVolumePedal(state.volumePedal - 0.08, 0.03);
+          return;
+        }
+
+        // Spacebar: Palm Damp
+        if (e.code === 'Space') {
+          e.preventDefault();
+          audio.dampAll();
+          updateReadouts();
+        }
+      });
+
+      window.addEventListener('keyup', (e) => {
+        const k = e.key.toLowerCase();
+        if (KEY_TO_MECH[k] && !state.latchMode) {
+          mechKeys[KEY_TO_MECH[k]] = false;
+          syncMech(KEY_TO_MECH[k]);
+        }
+      });
+
+      // =======================================================================
+      // 6. AUTOMATED "PLAY CLASSIC LICKS" DEMO PLAYER
+      // =======================================================================
+      let demoTimers = [];
+      let activeDemo = null;
+      const stopDemoBtn = document.getElementById('stopDemoBtn');
+
+      function stopDemo() {
+        demoTimers.forEach(id => clearTimeout(id));
+        demoTimers = [];
+        activeDemo = null;
+        stopDemoBtn.classList.add('hidden');
+        document.querySelectorAll('.demo-btn').forEach(b => {
+          b.classList.remove('bg-amber-600', 'text-white');
+          b.classList.add('bg-slate-900', 'text-slate-100');
+        });
+        ['A', 'B', 'C', 'LKL', 'LKR', 'RKR'].forEach(m => setMech(m, false));
+      }
+
+      const DEMO_LICKS = {
+        // 1. Classic Nashville I -> IV -> I -> V -> I Swell
+        swell: [
+          { t: 0,    fn: () => { audio.dampAll(); ['A','B','C','LKL','LKR','RKR'].forEach(m => setMech(m, false)); state.targetBarFret = 0; setVolumePedal(0.15, 0.03); } },
+          { t: 180,  fn: () => { triggerGrip('mid'); setVolumePedal(0.88, 0.16); } },
+          { t: 1200, fn: () => { setMech('A', true); setMech('B', true); } }, // Cry smoothly up E -> A
+          { t: 2450, fn: () => { setMech('A', false); setMech('B', false); } }, // Weep back A -> E
+          { t: 3350, fn: () => { setVolumePedal(0.22, 0.10); state.targetBarFret = 5; } },
+          { t: 3750, fn: () => { triggerGrip('high'); setVolumePedal(0.92, 0.16); } }, // A major at fret 5
+          { t: 4700, fn: () => { setMech('A', true); setMech('B', true); } }, // Swell into D major
+          { t: 5850, fn: () => { setMech('A', false); setMech('B', false); state.targetBarFret = 7; } }, // Glide to B (V)
+          { t: 6250, fn: () => { triggerGrip('mid'); setVolumePedal(0.90, 0.14); } },
+          { t: 7200, fn: () => { state.targetBarFret = 12; } }, // Glide high to octave E
+          { t: 7550, fn: () => { triggerGrip('strum'); setVolumePedal(0.95, 0.22); } },
+          { t: 10200, fn: () => stopDemo() }
+        ],
+
+        // 2. Crying Country Turnaround in G (Fret 3) -> C -> G -> D -> G
+        turnaround: [
+          { t: 0,    fn: () => { audio.dampAll(); ['A','B','C','LKL','LKR','RKR'].forEach(m => setMech(m, false)); state.targetBarFret = 3; setMech('A', true); setMech('B', true); setVolumePedal(0.25, 0.03); } },
+          { t: 180,  fn: () => { triggerGrip('high'); setVolumePedal(0.90, 0.14); } }, // C major at fret 3
+          { t: 1050, fn: () => { setMech('A', false); setMech('B', false); } }, // Weep down into G major
+          { t: 2050, fn: () => { state.targetBarFret = 8; setVolumePedal(0.28, 0.08); } },
+          { t: 2400, fn: () => { triggerGrip('mid'); setVolumePedal(0.88, 0.12); } }, // C major at fret 8
+          { t: 3150, fn: () => { setMech('LKR', true); } }, // Cmaj7 weeping tension
+          { t: 3850, fn: () => { setMech('LKR', false); state.targetBarFret = 10; } }, // Glide to D major
+          { t: 4150, fn: () => { triggerGrip('warm'); setVolumePedal(0.92, 0.12); } },
+          { t: 5000, fn: () => { setMech('A', true); setMech('B', true); } }, // Cry up to G major at fret 10
+          { t: 6100, fn: () => { setMech('A', false); setMech('B', false); state.targetBarFret = 3; setVolumePedal(0.20, 0.10); } },
+          { t: 6550, fn: () => { triggerGrip('low'); setVolumePedal(0.90, 0.18); } },
+          { t: 7400, fn: () => { audio.pluckString(3, 0.85, true); audio.pluckString(2, 0.82, true); } },
+          { t: 9800, fn: () => stopDemo() }
+        ],
+
+        // 3. Ambient Space Steel (Lush swells, minor Pedal A shifts & dreamy glissandos)
+        ambient: [
+          { t: 0,    fn: () => { audio.dampAll(); ['A','B','C','LKL','LKR','RKR'].forEach(m => setMech(m, false)); state.targetBarFret = 0; setVolumePedal(0.08, 0.03); } },
+          { t: 220,  fn: () => { triggerGrip('warm'); setVolumePedal(0.86, 0.35); } }, // Lush E major bloom
+          { t: 2000, fn: () => { setMech('A', true); } }, // Shift to C# minor
+          { t: 3600, fn: () => { setVolumePedal(0.18, 0.25); state.targetBarFret = 5; } }, // Glide to fret 5 (F#m with A)
+          { t: 4300, fn: () => { triggerGrip('high'); setVolumePedal(0.88, 0.32); } },
+          { t: 5900, fn: () => { setMech('A', false); } }, // Open into shimmering A major
+          { t: 7200, fn: () => { state.targetBarFret = 7; setVolumePedal(0.92, 0.25); } }, // Slow glissando to B
+          { t: 8600, fn: () => { state.targetBarFret = 12; } }, // Dreamy glide up to high E
+          { t: 9200, fn: () => { audio.pluckString(0, 0.72, true); audio.pluckString(2, 0.76, true); audio.pluckString(3, 0.80, true); setVolumePedal(0.94, 0.30); } },
+          { t: 12400, fn: () => stopDemo() }
+        ]
+      };
+
+      function playDemo(name) {
+        stopDemo();
+        audio.init();
+        const seq = DEMO_LICKS[name];
+        if (!seq) return;
+
+        activeDemo = name;
+        stopDemoBtn.classList.remove('hidden');
+        const btn = document.querySelector(`.demo-btn[data-demo="${name}"]`);
+        if (btn) {
+          btn.classList.remove('bg-slate-900', 'text-slate-100');
+          btn.classList.add('bg-amber-600', 'text-white');
+        }
+
+        seq.forEach(step => {
+          const id = setTimeout(step.fn, step.t);
+          demoTimers.push(id);
+        });
+      }
+
+      document.querySelectorAll('.demo-btn').forEach(btn => {
+        btn.addEventListener('click', () => playDemo(btn.dataset.demo));
+      });
+      stopDemoBtn.addEventListener('click', stopDemo);
+
+      // =======================================================================
+      // 7. INITIALIZE APP ON LOAD
+      // =======================================================================
+      // 7. INITIALIZE APP ON LOAD & HANDLE ROTATION / RESIZE
+      // =======================================================================
+      function handleViewportResize() {
+        resizeStringsCanvas();
+        setVolumePedal(state.volumePedal, 0.01);
+      }
+
+      window.addEventListener('resize', handleViewportResize);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(handleViewportResize, 120);
+      });
+
+      window.addEventListener('load', () => {
+        buildStringLabels();
+        buildFretboard();
+        handleViewportResize();
+        updateToneBarPosition();
+        updateReadouts();
+
+        // Keep canvas crisp if layout flex-resizes
+        const neckAssembly = document.getElementById('neckAssembly');
+        if (neckAssembly && typeof ResizeObserver !== 'undefined') {
+          new ResizeObserver(() => resizeStringsCanvas()).observe(neckAssembly);
+        }
+
+        requestAnimationFrame(animateLoop);
+      });
+    })();
+  </script>
+</body>
+</html>
