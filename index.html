@@ -146,6 +146,10 @@
         padding: 4px 8px !important;
         font-size: 11px !important;
       }
+      .palm-damp-circle {
+        width: 62px !important;
+        height: 62px !important;
+      }
     }
 
     .font-mono-tech {
@@ -436,8 +440,80 @@
       background: linear-gradient(180deg, #451a03 0%, #271104 100%);
     }
 
+    /* Tone Bar Vertical Volume Indicator */
+    .tone-bar-vol-dot {
+      position: absolute;
+      left: 50%;
+      width: 22px;
+      height: 12px;
+      transform: translate(-50%, 50%);
+      border-radius: 9999px;
+      background: radial-gradient(circle at 50% 35%, #fef3c7 0%, #f59e0b 55%, #b45309 100%);
+      border: 1.5px solid #fffbeb;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+      z-index: 5;
+      transition: opacity 0.12s ease;
+    }
+
+    /* Large Circular Palm Damp Button */
+    .palm-damp-circle {
+      background:
+        radial-gradient(circle at 35% 30%, #4c1d24 0%, #2a1015 55%, #16090c 100%);
+      border: 3px solid #f43f5e;
+      box-shadow:
+        0 6px 0 #1f0a0e,
+        0 10px 22px rgba(0, 0, 0, 0.7),
+        inset 0 2px 6px rgba(254, 205, 211, 0.22),
+        0 0 14px rgba(244, 63, 94, 0.22);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.08s ease, background 0.08s ease;
+      cursor: pointer;
+    }
+    .palm-damp-circle:hover {
+      border-color: #fb7185;
+      box-shadow:
+        0 6px 0 #1f0a0e,
+        0 10px 22px rgba(0, 0, 0, 0.7),
+        inset 0 2px 6px rgba(254, 205, 211, 0.3),
+        0 0 20px rgba(244, 63, 94, 0.38);
+    }
+    .palm-damp-circle:active,
+    .palm-damp-circle.flash {
+      transform: translateY(4px) scale(0.95);
+      border-color: #fda4af;
+      background: radial-gradient(circle at 50% 50%, #9f1239 0%, #4c0519 75%, #2a0610 100%);
+      box-shadow:
+        0 2px 0 #1f0a0e,
+        0 0 26px rgba(244, 63, 94, 0.7),
+        inset 0 2px 10px rgba(255, 228, 230, 0.4);
+    }
+
+    /* Vintage Tone Preset Selector */
+    .preset-select {
+      background-color: #0f172a;
+      color: #fbbf24;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 2px 22px 2px 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 20 20' fill='%23fbbf24'%3E%3Cpath d='M5.5 7.5l4.5 5 4.5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(255, 255, 255, 0.25);
+    }
+    .preset-select:focus {
+      outline: none;
+      border-color: #f59e0b;
+    }
+
     /* Interactive surfaces explicitly locked against browser gestures */
-    .amp-panel, .steel-body, .floor-pedal, .knee-lever, .grip-btn, .vol-pedal-track, #fretboardArea, #pluckZone, #toneBar {
+    .amp-panel, .steel-body, .floor-pedal, .knee-lever, .grip-btn, .palm-damp-circle, .vol-pedal-track, #fretboardArea, #pluckZone, #toneBar {
       touch-action: none;
     }
 
@@ -482,8 +558,17 @@
       <div class="silverface-strip px-3 sm:px-4 py-1 flex flex-wrap items-center justify-between gap-1.5 text-xs font-semibold tracking-wide">
         <div class="flex items-center gap-2">
           <div id="jewelLamp" class="jewel-lamp standby" title="Amp Power Status"></div>
-          <span class="font-vintage italic text-sm sm:text-lg font-bold tracking-tight text-slate-900">Nashville E9</span>
-          <span class="hidden md:inline-block px-2 py-0.5 rounded bg-slate-900 text-amber-400 font-mono-tech text-[10px] uppercase tracking-wider">Twin-10 Tube Rig</span>
+          <span class="font-vintage italic text-sm sm:text-lg font-bold tracking-tight text-slate-900">Pedal Steel</span>
+          <label class="flex items-center gap-1" title="Switch Pedal Steel Tone Preset">
+            <span class="text-[9px] uppercase tracking-wider text-slate-700 font-bold hidden xl:inline">Tone:</span>
+            <select id="presetSelect" class="preset-select" aria-label="Tone Preset">
+              <option value="80s90s" selected>80s/90s Country</option>
+              <option value="honkytonk">70s Honky-Tonk</option>
+              <option value="nashville">Nashville E9</option>
+              <option value="cryingballad">Crying Ballad</option>
+              <option value="spacesteel">Ambient Space Steel</option>
+            </select>
+          </label>
           <button id="audioUnlockPill" class="px-2.5 py-0.5 rounded-full bg-amber-600 text-white font-mono-tech text-[10px] uppercase tracking-wider shadow animate-pulse">
             🔊 Tap to Enable Audio
           </button>
@@ -538,34 +623,34 @@
 
         <!-- Rotary Amp Knobs -->
         <div class="flex items-center justify-around sm:justify-between md:justify-end gap-2 sm:gap-3 lg:gap-5 flex-1 min-w-0 overflow-x-auto">
-          <div class="knob-wrap" data-param="ampVolume" data-min="0" data-max="1" data-value="0.78" data-default="0.78">
+          <div class="knob-wrap" data-param="ampVolume" data-min="0" data-max="1" data-value="0.80" data-default="0.80">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
             <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Volume</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">78%</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">80%</span>
           </div>
 
-          <div class="knob-wrap" data-param="toneChime" data-min="0" data-max="1" data-value="0.62" data-default="0.62">
+          <div class="knob-wrap" data-param="toneChime" data-min="0" data-max="1" data-value="0.72" data-default="0.72">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
             <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Chime</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">62%</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">72%</span>
           </div>
 
-          <div class="knob-wrap" data-param="tubeWarmth" data-min="0" data-max="1" data-value="0.35" data-default="0.35">
+          <div class="knob-wrap" data-param="tubeWarmth" data-min="0" data-max="1" data-value="0.12" data-default="0.12">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
             <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Tubes</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">35%</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">12%</span>
           </div>
 
-          <div class="knob-wrap" data-param="reverb" data-min="0" data-max="1" data-value="0.48" data-default="0.48">
+          <div class="knob-wrap" data-param="reverb" data-min="0" data-max="1" data-value="0.58" data-default="0.58">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
-            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Spring Rev</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">48%</span>
+            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Studio Rev</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">58%</span>
           </div>
 
-          <div class="knob-wrap" data-param="delay" data-min="0" data-max="1" data-value="0.28" data-default="0.28">
+          <div class="knob-wrap" data-param="delay" data-min="0" data-max="1" data-value="0.22" data-default="0.22">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
             <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Tape Delay</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">28%</span>
+            <span class="knob-val text-[10px] font-mono-tech text-amber-400">22%</span>
           </div>
 
           <div class="knob-wrap" data-param="glideSpeed" data-min="0" data-max="1" data-value="0.65" data-default="0.65">
@@ -612,7 +697,7 @@
       <div class="steel-brand-row flex flex-wrap items-center justify-between gap-2 px-1 shrink-0">
         <div class="flex items-center gap-2">
           <span class="font-vintage italic text-amber-200/90 text-sm sm:text-base tracking-wide drop-shadow">Sho-Master Pro E9</span>
-          <span class="text-[11px] text-amber-100/60 hidden md:inline">• Multi-touch ready: slide bar, hold pedals &amp; strum pickup simultaneously</span>
+          <span class="text-[11px] text-amber-100/60 hidden md:inline">• Slide bar L/R for pitch, Up/Down for volume • Hold pedals &amp; strum pickup simultaneously</span>
         </div>
         <div id="statusBadge" class="text-[10px] font-mono-tech px-2.5 py-0.5 rounded-full bg-black/45 border border-amber-400/30 text-amber-200">
           Tap anywhere to ignite tubes
@@ -637,8 +722,10 @@
           <!-- Fret Lines, Numbers, Chord Labels, Pearloid Markers (populated by JS) -->
           <div id="fretsLayer" class="absolute inset-0 pointer-events-none"></div>
 
-          <!-- Chrome Tone Bar -->
-          <div id="toneBar" class="tone-bar" title="Drag left/right to slide &amp; add bar vibrato"></div>
+          <!-- Chrome Tone Bar (X = Fret Pitch, Y = Volume Pedal Swell) -->
+          <div id="toneBar" class="tone-bar" title="Drag left/right to slide pitch, up/down to control volume (top = full, bottom = silent)">
+            <div id="toneBarVolDot" class="tone-bar-vol-dot" style="bottom: 85%;"></div>
+          </div>
         </div>
 
         <!-- Right Chrome Pickup & Pluck/Strum Zone -->
@@ -696,16 +783,15 @@
           </button>
         </div>
 
-        <button id="muteBtn" class="grip-btn px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-xs font-semibold text-rose-300 border-rose-500/40 hover:border-rose-400 flex items-center gap-1.5">
-          <span class="font-mono-tech text-[10px] text-rose-400 bg-black/50 px-1 rounded hidden sm:inline">Space</span>
-          Palm Damp
-        </button>
+        <span class="hidden sm:inline text-[10px] font-mono-tech text-amber-200/65 px-2 py-0.5 rounded bg-black/30 border border-amber-500/20">
+          Bar ↑ Full Vol · ↓ Silent
+        </span>
       </div>
     </main>
 
-    <!-- ==================== 3. LOWER FLOOR DECK (PEDALS, KNEE LEVERS & VOLUME) ==================== -->
+    <!-- ==================== 3. LOWER FLOOR DECK (PEDALS, KNEE LEVERS, PALM DAMP & VOLUME) ==================== -->
     <section class="amp-panel floor-deck rounded-2xl p-2.5 sm:p-3.5 shrink-0">
-      <div class="flex flex-row items-stretch justify-between gap-2.5 sm:gap-4">
+      <div class="flex flex-row items-stretch justify-between gap-2 sm:gap-3.5">
 
         <!-- Left: Floor Pedals A, B, C + Latch Mode Toggle -->
         <div class="flex-1 flex flex-col gap-1.5 min-w-0">
@@ -804,30 +890,32 @@
           </div>
         </div>
 
-        <!-- Right: Rockable Volume Pedal -->
-        <div class="w-[100px] sm:w-[156px] lg:w-[180px] shrink-0 flex flex-col gap-1.5">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 truncate">Vol Pedal</span>
-            <span id="volPedalReadout" class="font-mono-tech text-[11px] font-bold text-amber-400">85%</span>
+        <!-- Right-Center: Large Circular Palm Damp Button (Directly beneath Pickup Zone) -->
+        <div class="shrink-0 flex flex-col items-center justify-center gap-1 px-0.5 sm:px-1">
+          <button id="muteBtn" class="palm-damp-circle w-[84px] h-[84px] sm:w-[100px] sm:h-[100px] rounded-full flex flex-col items-center justify-center text-center leading-tight select-none" title="Palm Damp / Mute all ringing strings (Spacebar)">
+            <span class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-rose-100 drop-shadow">Palm</span>
+            <span class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-rose-300 drop-shadow">Damp</span>
+            <span class="font-mono-tech text-[8px] text-rose-200/70 mt-1 hidden sm:inline">SPACE</span>
+          </button>
+        </div>
+
+        <!-- Far Right: Compact Volume Pedal Gauge (Tracks Tone Bar Vertical Position) -->
+        <div class="w-[62px] sm:w-[78px] shrink-0 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between gap-1">
+            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-300">Vol</span>
+            <span id="volPedalReadout" class="font-mono-tech text-[10px] font-bold text-amber-400">85%</span>
           </div>
 
-          <div class="flex items-center gap-2 flex-1">
-            <!-- Vertical Rockable Treadle -->
-            <div id="volPedalTrack" class="vol-pedal-track relative flex-1 h-[82px] sm:h-[96px] rounded-xl p-1 overflow-hidden" title="Drag up/down, use Scroll Wheel, or Up/Down arrows to swell volume">
+          <div class="flex items-center flex-1">
+            <!-- Compact Vertical Treadle (Mirrors Tone Bar Y Position; still directly draggable) -->
+            <div id="volPedalTrack" class="vol-pedal-track relative w-full h-[82px] sm:h-[96px] rounded-xl p-1 overflow-hidden" title="Tracks vertical finger position on the tone bar (top = full, bottom = silent). You can also drag here or use Up/Down arrows.">
               <!-- Glow Fill -->
-              <div id="volPedalFill" class="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-amber-600/35 to-amber-400/15 pointer-events-none transition-none" style="height: 85%;"></div>
+              <div id="volPedalFill" class="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-amber-600/40 to-amber-400/15 pointer-events-none transition-none" style="height: 85%;"></div>
               <!-- Treadle Footplate -->
-              <div id="volTreadle" class="vol-treadle absolute left-1 right-1 h-8 rounded-lg flex flex-col items-center justify-center pointer-events-none">
-                <span class="text-[8px] font-black tracking-widest text-slate-950 uppercase">Goodrich</span>
-                <div class="w-6 h-0.5 bg-slate-900/60 mt-0.5 rounded"></div>
+              <div id="volTreadle" class="vol-treadle absolute left-1 right-1 h-6 sm:h-7 rounded-md flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-[7px] font-black tracking-wider text-slate-950 uppercase">Bar</span>
+                <div class="w-4 h-0.5 bg-slate-900/60 mt-0.5 rounded"></div>
               </div>
-            </div>
-
-            <!-- Quick Swell Hint -->
-            <div class="vol-hint-col hidden sm:flex flex-col justify-between h-[96px] text-[9px] font-mono-tech text-slate-400 py-1">
-              <span class="text-amber-300">TOE</span>
-              <span class="text-center text-[8px] leading-tight text-slate-500">↑↓<br/>Drag</span>
-              <span>HEEL</span>
             </div>
           </div>
         </div>
@@ -887,15 +975,80 @@
         strum: [10, 8, 6, 5, 4, 3]
       };
 
+      // Popular Pedal Steel Tone Presets (default: 80s/90s Country)
+      const TONE_PRESETS = {
+        '80s90s': {
+          name: '80s/90s Country',
+          subtitle: '80s/90s Country • Clean Bell & Studio Hall',
+          params: { ampVolume: 0.80, toneChime: 0.72, tubeWarmth: 0.12, reverb: 0.58, delay: 0.22, glideSpeed: 0.65 },
+          vibratoLevel: 1,
+          lowBodyFreq: 195, lowBodyGain: 3.0,
+          midFreq: 750, midQ: 1.0, midGain: -3.5,
+          chimeFreq: 2850, chimeQ: 1.0,
+          chimeMix: 0.46, pickLevel: 0.085,
+          delayL: 0.31, delayR: 0.42, delayTone: 2500,
+          vibRate: 5.2
+        },
+        honkytonk: {
+          name: '70s Honky-Tonk',
+          subtitle: '70s Honky-Tonk • Twin Twang & Slapback',
+          params: { ampVolume: 0.80, toneChime: 0.78, tubeWarmth: 0.36, reverb: 0.42, delay: 0.14, glideSpeed: 0.72 },
+          vibratoLevel: 1,
+          lowBodyFreq: 220, lowBodyGain: 1.8,
+          midFreq: 950, midQ: 1.2, midGain: 1.8,
+          chimeFreq: 2500, chimeQ: 1.25,
+          chimeMix: 0.50, pickLevel: 0.18,
+          delayL: 0.135, delayR: 0.185, delayTone: 2800,
+          vibRate: 5.5
+        },
+        nashville: {
+          name: 'Nashville E9',
+          subtitle: 'Nashville E9 • Twin-10 Tube Rig',
+          params: { ampVolume: 0.78, toneChime: 0.62, tubeWarmth: 0.35, reverb: 0.48, delay: 0.28, glideSpeed: 0.65 },
+          vibratoLevel: 1,
+          lowBodyFreq: 210, lowBodyGain: 2.5,
+          midFreq: 800, midQ: 1.0, midGain: 0.0,
+          chimeFreq: 2650, chimeQ: 1.1,
+          chimeMix: 0.42, pickLevel: 0.15,
+          delayL: 0.345, delayR: 0.475, delayTone: 2100,
+          vibRate: 5.1
+        },
+        cryingballad: {
+          name: 'Crying Ballad',
+          subtitle: 'Crying Ballad • Warm Velvet & Lush Swell',
+          params: { ampVolume: 0.82, toneChime: 0.48, tubeWarmth: 0.20, reverb: 0.72, delay: 0.32, glideSpeed: 0.52 },
+          vibratoLevel: 2,
+          lowBodyFreq: 180, lowBodyGain: 4.0,
+          midFreq: 820, midQ: 0.95, midGain: -2.5,
+          chimeFreq: 2350, chimeQ: 0.9,
+          chimeMix: 0.34, pickLevel: 0.055,
+          delayL: 0.38, delayR: 0.51, delayTone: 1800,
+          vibRate: 4.6
+        },
+        spacesteel: {
+          name: 'Ambient Space Steel',
+          subtitle: 'Ambient Space Steel • Ethereal Pad & Echo',
+          params: { ampVolume: 0.76, toneChime: 0.56, tubeWarmth: 0.18, reverb: 0.88, delay: 0.68, glideSpeed: 0.42 },
+          vibratoLevel: 2,
+          lowBodyFreq: 190, lowBodyGain: 3.2,
+          midFreq: 700, midQ: 0.9, midGain: -2.0,
+          chimeFreq: 3100, chimeQ: 0.85,
+          chimeMix: 0.48, pickLevel: 0.03,
+          delayL: 0.44, delayR: 0.62, delayTone: 2200,
+          vibRate: 4.2
+        }
+      };
+
       // Instrument State
       const state = {
+        preset: '80s90s',
         barFret: 0.0,         // Current rendered & sounding bar position (0..15)
         targetBarFret: 0.0,   // Target fret when clicking/gliding
         isDraggingBar: false,
         latchMode: false,
         autoSwell: true,
         vibratoLevel: 1,      // 0 = OFF, 1 = MED, 2 = LUSH
-        volumePedal: 0.85,    // 0.0 .. 1.0
+        volumePedal: 0.85,    // 0.0 .. 1.0 (controlled by tone bar Y or Vol Pedal)
         mechs: {
           A: false,
           B: false,
@@ -904,14 +1057,7 @@
           LKR: false,
           RKR: false
         },
-        params: {
-          ampVolume: 0.78,
-          toneChime: 0.62,
-          tubeWarmth: 0.35,
-          reverb: 0.48,
-          delay: 0.28,
-          glideSpeed: 0.65
-        },
+        params: { ...TONE_PRESETS['80s90s'].params },
         // Visual vibration state per string (0..9)
         stringVis: STRINGS.map(() => ({
           amp: 0,
@@ -1113,7 +1259,8 @@
           if (pill) pill.classList.toggle('hidden', !!isRunning);
           const badge = document.getElementById('statusBadge');
           if (badge) {
-            badge.textContent = isRunning ? 'Tubes Warm • Multi-Touch Active' : 'Tap anywhere to ignite tubes';
+            const preset = TONE_PRESETS[state.preset] || TONE_PRESETS['80s90s'];
+            badge.textContent = isRunning ? preset.subtitle : 'Tap anywhere to ignite tubes';
           }
         }
 
@@ -1231,27 +1378,34 @@
 
           // 4. Tube Preamp Stage
           this.preampDriveGain = ctx.createGain();
-          this.preampDriveGain.gain.value = 1.25;
+          this.preampDriveGain.gain.value = 1.15;
 
           this.tubeShaper = ctx.createWaveShaper();
           this.tubeShaper.oversample = '2x';
           this.tubeShaper.curve = this._makeTubeCurve(state.params.tubeWarmth);
 
-          // 5. Twin Reverb / Nashville 112 Tone Stack & Speaker Cabinet
+          // 5. Peavey Nashville 400 / Twin Reverb Tone Stack & Speaker Cabinet
           this.lowBodyEQ = ctx.createBiquadFilter();
           this.lowBodyEQ.type = 'lowshelf';
-          this.lowBodyEQ.frequency.value = 210;
-          this.lowBodyEQ.gain.value = 2.5;
+          this.lowBodyEQ.frequency.value = 195;
+          this.lowBodyEQ.gain.value = 3.0;
+
+          // Classic Peavey "Shift" midrange scoop / honky-tonk midrange punch
+          this.midScoopEQ = ctx.createBiquadFilter();
+          this.midScoopEQ.type = 'peaking';
+          this.midScoopEQ.frequency.value = 750;
+          this.midScoopEQ.Q.value = 1.0;
+          this.midScoopEQ.gain.value = -3.5;
 
           this.chimePresenceEQ = ctx.createBiquadFilter();
           this.chimePresenceEQ.type = 'peaking';
-          this.chimePresenceEQ.frequency.value = 2650;
-          this.chimePresenceEQ.Q.value = 1.1;
-          this.chimePresenceEQ.gain.value = 3.0;
+          this.chimePresenceEQ.frequency.value = 2850;
+          this.chimePresenceEQ.Q.value = 1.0;
+          this.chimePresenceEQ.gain.value = 3.5;
 
           this.cabLowpass = ctx.createBiquadFilter();
           this.cabLowpass.type = 'lowpass';
-          this.cabLowpass.frequency.value = 5200;
+          this.cabLowpass.frequency.value = 5400;
           this.cabLowpass.Q.value = 0.7;
 
           // Connect pre-FX amp path
@@ -1260,7 +1414,8 @@
           this.autoSwellGain.connect(this.preampDriveGain);
           this.preampDriveGain.connect(this.tubeShaper);
           this.tubeShaper.connect(this.lowBodyEQ);
-          this.lowBodyEQ.connect(this.chimePresenceEQ);
+          this.lowBodyEQ.connect(this.midScoopEQ);
+          this.midScoopEQ.connect(this.chimePresenceEQ);
           this.chimePresenceEQ.connect(this.cabLowpass);
 
           // 6. Master Output + Soft Compressor/Limiter
@@ -1295,8 +1450,8 @@
 
           this.delayL = ctx.createDelay(1.5);
           this.delayR = ctx.createDelay(1.5);
-          this.delayL.delayTime.value = 0.345;
-          this.delayR.delayTime.value = 0.475;
+          this.delayL.delayTime.value = 0.31;
+          this.delayR.delayTime.value = 0.42;
 
           this.delayFeedbackL = ctx.createGain();
           this.delayFeedbackR = ctx.createGain();
@@ -1305,7 +1460,7 @@
 
           this.delayTone = ctx.createBiquadFilter();
           this.delayTone.type = 'lowpass';
-          this.delayTone.frequency.value = 2100;
+          this.delayTone.frequency.value = 2500;
 
           const merger = ctx.createChannelMerger(2);
 
@@ -1334,10 +1489,10 @@
           const ctx = this.ctx;
           this.vibratoLFO = ctx.createOscillator();
           this.vibratoLFO.type = 'sine';
-          this.vibratoLFO.frequency.value = 5.1;
+          this.vibratoLFO.frequency.value = 5.2;
 
           this.vibratoDepthGain = ctx.createGain();
-          this.vibratoDepthGain.gain.value = 7.5; // cents
+          this.vibratoDepthGain.gain.value = 8.5; // cents
 
           this.vibratoLFO.connect(this.vibratoDepthGain);
           this.vibratoLFO.start();
@@ -1368,10 +1523,23 @@
           if (!this.initialized) return;
           const now = this.ctx.currentTime;
           const p = state.params;
+          const preset = TONE_PRESETS[state.preset] || TONE_PRESETS['80s90s'];
 
           this.masterGain.gain.setTargetAtTime(p.ampVolume * 0.95, now, 0.02);
 
+          // Preset-shaped tone stack (low body, Peavey mid-scoop / Twin punch, presence)
+          this.lowBodyEQ.frequency.setTargetAtTime(preset.lowBodyFreq, now, 0.04);
+          this.lowBodyEQ.gain.setTargetAtTime(preset.lowBodyGain, now, 0.04);
+
+          if (this.midScoopEQ) {
+            this.midScoopEQ.frequency.setTargetAtTime(preset.midFreq, now, 0.04);
+            this.midScoopEQ.Q.setTargetAtTime(preset.midQ, now, 0.04);
+            this.midScoopEQ.gain.setTargetAtTime(preset.midGain, now, 0.04);
+          }
+
           // Tone/Chime sweeps both presence boost and cab brightness
+          this.chimePresenceEQ.frequency.setTargetAtTime(preset.chimeFreq, now, 0.04);
+          this.chimePresenceEQ.Q.setTargetAtTime(preset.chimeQ, now, 0.04);
           this.chimePresenceEQ.gain.setTargetAtTime(-2 + p.toneChime * 8.5, now, 0.03);
           this.cabLowpass.frequency.setTargetAtTime(2800 + p.toneChime * 3800, now, 0.03);
 
@@ -1379,13 +1547,17 @@
           this.preampDriveGain.gain.setTargetAtTime(1.0 + p.tubeWarmth * 1.45, now, 0.03);
           this.tubeShaper.curve = this._makeTubeCurve(p.tubeWarmth);
 
-          // Reverb & Delay wet levels
+          // Reverb & Delay wet levels + preset delay timing
           this.reverbSend.gain.setTargetAtTime(p.reverb * 0.95, now, 0.03);
           this.delaySend.gain.setTargetAtTime(p.delay * 0.65, now, 0.03);
+          this.delayL.delayTime.setTargetAtTime(preset.delayL, now, 0.05);
+          this.delayR.delayTime.setTargetAtTime(preset.delayR, now, 0.05);
+          this.delayTone.frequency.setTargetAtTime(preset.delayTone, now, 0.05);
           this.delayFeedbackL.gain.setTargetAtTime(0.20 + p.delay * 0.38, now, 0.03);
           this.delayFeedbackR.gain.setTargetAtTime(0.18 + p.delay * 0.36, now, 0.03);
 
-          // Vibrato depth (in cents)
+          // Vibrato rate & depth (in cents)
+          this.vibratoLFO.frequency.setTargetAtTime(preset.vibRate, now, 0.05);
           const vibCents = state.vibratoLevel === 0 ? 0 : (state.vibratoLevel === 1 ? 8.5 : 17.0);
           this.vibratoDepthGain.gain.setTargetAtTime(vibCents, now, 0.05);
         }
@@ -1397,6 +1569,7 @@
           this.init();
           const ctx = this.ctx;
           const now = ctx.currentTime;
+          const preset = TONE_PRESETS[state.preset] || TONE_PRESETS['80s90s'];
 
           // Cleanly damp any previous voice on this exact string
           if (this.voices[index]) {
@@ -1443,7 +1616,7 @@
           chimeFilter.frequency.exponentialRampToValueAtTime(endCut, now + 1.45);
 
           const chimeMix = ctx.createGain();
-          chimeMix.gain.value = 0.42;
+          chimeMix.gain.value = preset.chimeMix;
 
           // Connect global subtle vibrato LFO to both oscillators
           this.vibratoDepthGain.connect(bodyOsc.detune);
@@ -1454,7 +1627,7 @@
           chimeFilter.connect(chimeMix);
           chimeMix.connect(voiceGain);
 
-          // Metallic Fingerpick Transient Burst (filtered noise + short metallic ping)
+          // Metallic Fingerpick Transient Burst (scaled per tone preset)
           const pickNoise = ctx.createBufferSource();
           pickNoise.buffer = this.noiseBuffer;
           const pickBand = ctx.createBiquadFilter();
@@ -1462,7 +1635,7 @@
           pickBand.frequency.value = Math.min(5200, freq * 6.5 + 1400);
           pickBand.Q.value = 2.4;
           const pickGain = ctx.createGain();
-          pickGain.gain.setValueAtTime(0.16 * velocity, now);
+          pickGain.gain.setValueAtTime(preset.pickLevel * velocity, now);
           pickGain.gain.exponentialRampToValueAtTime(0.0005, now + 0.032);
 
           pickNoise.connect(pickBand);
@@ -1920,15 +2093,24 @@
       // 5. TRUE MULTI-TOUCH INTERACTIVE CONTROLS (PER-POINTER ID TRACKING)
       // =======================================================================
 
-      // --- A. Chrome Tone Bar & Fretboard (Dedicated barPointerId) ---
+      // --- A. Chrome Tone Bar & Fretboard (Dedicated barPointerId: X = Fret, Y = Volume) ---
       let barPointerId = null;
       let barDownX = 0;
+      let barDownY = 0;
       let barGrabbedDirectly = false;
 
       function clientXToFret(clientX) {
         const rect = fretboardArea.getBoundingClientRect();
-        const norm = (clientX - rect.left) / rect.width;
+        const norm = (clientX - rect.left) / Math.max(1, rect.width);
         return Math.max(0, Math.min(MAX_FRET, norm * MAX_FRET));
+      }
+
+      function clientYToBarVolume(clientY) {
+        const rect = fretboardArea.getBoundingClientRect();
+        const pad = Math.min(18, rect.height * 0.08);
+        const usable = Math.max(1, rect.height - pad * 2);
+        const norm = 1 - (clientY - rect.top - pad) / usable;
+        return Math.max(0, Math.min(1, norm));
       }
 
       fretboardArea.addEventListener('pointerdown', (e) => {
@@ -1939,9 +2121,13 @@
 
         barPointerId = e.pointerId;
         barDownX = e.clientX;
+        barDownY = e.clientY;
         barGrabbedDirectly = (e.target === toneBarEl || e.target.closest('#toneBar'));
 
         try { fretboardArea.setPointerCapture(e.pointerId); } catch (_) {}
+
+        // Vertical finger position on tone bar controls volume (top = full, bottom = silent)
+        setVolumePedal(clientYToBarVolume(e.clientY), 0.02);
 
         const rawFret = clientXToFret(e.clientX);
         if (barGrabbedDirectly) {
@@ -1964,8 +2150,11 @@
         if (e.pointerId !== barPointerId) return;
         e.preventDefault();
 
-        // If user tapped the fretboard and starts sliding, engage direct continuous bar tracking
-        if (!state.isDraggingBar && Math.abs(e.clientX - barDownX) > 4) {
+        // Continuously track vertical volume position while finger is on the bar/fretboard
+        setVolumePedal(clientYToBarVolume(e.clientY), 0.018);
+
+        // If user tapped the fretboard and starts sliding horizontally, engage direct continuous bar tracking
+        if (!state.isDraggingBar && (Math.abs(e.clientX - barDownX) > 4 || Math.abs(e.clientY - barDownY) > 4)) {
           state.isDraggingBar = true;
           toneBarEl.classList.add('dragging');
         }
@@ -2074,10 +2263,19 @@
         });
       });
 
-      document.getElementById('muteBtn').addEventListener('pointerdown', (e) => {
-        e.preventDefault();
+      const muteBtn = document.getElementById('muteBtn');
+      function triggerPalmDamp() {
         audio.dampAll();
         updateReadouts();
+        if (muteBtn) {
+          muteBtn.classList.add('flash');
+          setTimeout(() => muteBtn.classList.remove('flash'), 150);
+        }
+      }
+
+      muteBtn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        triggerPalmDamp();
       });
 
       // --- D. Pedals & Knee Levers (Independent Multi-Touch Sets + Keyboard + Latch) ---
@@ -2156,11 +2354,12 @@
         });
       });
 
-      // --- E. Volume Pedal Treadle (Dedicated volPointerId) ---
+      // --- E. Volume Pedal Treadle & Tone Bar Volume Indicator ---
       const volPedalTrack = document.getElementById('volPedalTrack');
       const volPedalFill = document.getElementById('volPedalFill');
       const volTreadle = document.getElementById('volTreadle');
       const volPedalReadout = document.getElementById('volPedalReadout');
+      const toneBarVolDot = document.getElementById('toneBarVolDot');
       let volPointerId = null;
 
       function setVolumePedal(val, smoothTime = 0.025) {
@@ -2168,13 +2367,18 @@
         const pct = Math.round(state.volumePedal * 100);
         volPedalReadout.textContent = `${pct}%`;
         volPedalFill.style.height = `${pct}%`;
-        // Dynamically compute travel inside track bounds for any screen size
+        // Dynamically compute travel inside compact track bounds for any screen size
         const trackH = volPedalTrack.clientHeight || 96;
-        const treadleH = volTreadle.offsetHeight || 32;
+        const treadleH = volTreadle.offsetHeight || 28;
         const pad = 4;
         const travel = Math.max(8, trackH - treadleH - pad * 2);
         const bottomPx = pad + state.volumePedal * travel;
         volTreadle.style.bottom = `${bottomPx}px`;
+        // Mirror volume position directly on the chrome tone bar (top = full, bottom = silent)
+        if (toneBarVolDot) {
+          toneBarVolDot.style.bottom = `${8 + state.volumePedal * 84}%`;
+          toneBarVolDot.style.opacity = state.volumePedal < 0.03 ? '0.45' : '1';
+        }
         audio.updateVolumePedal(state.volumePedal, smoothTime);
       }
 
@@ -2266,32 +2470,68 @@
         knobEl.addEventListener('pointercancel', endDrag);
 
         knobEl.addEventListener('dblclick', () => {
-          state.params[param] = defVal;
-          renderKnob(knobEl, defVal);
+          const curDef = parseFloat(knobEl.dataset.default);
+          state.params[param] = curDef;
+          renderKnob(knobEl, curDef);
           audio.updateAllParams();
         });
       });
 
-      // --- G. Auto-Swell, Vibrato & Help Toggles ---
+      // --- G. Tone Presets, Auto-Swell, Vibrato & Help Toggles ---
       const autoSwellBtn = document.getElementById('autoSwellBtn');
       autoSwellBtn.addEventListener('click', () => {
         state.autoSwell = !state.autoSwell;
         autoSwellBtn.textContent = `Auto-Swell: ${state.autoSwell ? 'ON' : 'OFF'}`;
         autoSwellBtn.className = state.autoSwell
-          ? 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm'
-          : 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-slate-800 border-slate-600 text-slate-400';
+          ? 'px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm'
+          : 'px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-slate-800 border-slate-600 text-slate-400';
       });
 
       const vibratoBtn = document.getElementById('vibratoBtn');
       const vibLabels = ['OFF', 'MED', 'LUSH'];
-      vibratoBtn.addEventListener('click', () => {
-        state.vibratoLevel = (state.vibratoLevel + 1) % 3;
+      function renderVibratoBtn() {
         vibratoBtn.textContent = `Vibrato: ${vibLabels[state.vibratoLevel]}`;
         vibratoBtn.className = state.vibratoLevel > 0
-          ? 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-sky-500/20 border-sky-400 text-sky-300'
-          : 'px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition bg-slate-800 border-slate-600 text-slate-400';
+          ? 'px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-sky-500/20 border-sky-400 text-sky-300'
+          : 'px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-slate-800 border-slate-600 text-slate-400';
+      }
+
+      vibratoBtn.addEventListener('click', () => {
+        state.vibratoLevel = (state.vibratoLevel + 1) % 3;
+        renderVibratoBtn();
         audio.updateAllParams();
       });
+
+      const presetSelect = document.getElementById('presetSelect');
+      function applyPreset(presetKey) {
+        const preset = TONE_PRESETS[presetKey];
+        if (!preset) return;
+        state.preset = presetKey;
+        Object.assign(state.params, preset.params);
+        state.vibratoLevel = preset.vibratoLevel;
+
+        document.querySelectorAll('.knob-wrap').forEach(knobEl => {
+          const param = knobEl.dataset.param;
+          if (param in preset.params) {
+            const val = preset.params[param];
+            knobEl.dataset.value = String(val);
+            knobEl.dataset.default = String(val);
+            renderKnob(knobEl, val);
+          }
+        });
+
+        renderVibratoBtn();
+        audio.updateAllParams();
+        audio._syncAudioStatusUI();
+      }
+
+      if (presetSelect) {
+        presetSelect.addEventListener('change', () => {
+          unlockIOSAudio();
+          applyPreset(presetSelect.value);
+          presetSelect.blur();
+        });
+      }
 
       const helpDrawer = document.getElementById('helpDrawer');
       document.getElementById('toggleHelpBtn').addEventListener('click', () => {
@@ -2315,7 +2555,7 @@
       };
 
       window.addEventListener('keydown', (e) => {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
         const k = e.key.toLowerCase();
 
         // String plucks 1..9, 0
@@ -2381,8 +2621,7 @@
         // Spacebar: Palm Damp
         if (e.code === 'Space') {
           e.preventDefault();
-          audio.dampAll();
-          updateReadouts();
+          triggerPalmDamp();
         }
       });
 
@@ -2551,6 +2790,7 @@
       window.addEventListener('load', () => {
         buildStringLabels();
         buildFretboard();
+        applyPreset(state.preset);
         scheduleViewportSync(false);
         updateReadouts();
 
