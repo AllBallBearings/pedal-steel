@@ -147,8 +147,8 @@
         font-size: 11px !important;
       }
       .palm-damp-circle {
-        width: 62px !important;
-        height: 62px !important;
+        width: 52px !important;
+        height: 52px !important;
       }
     }
 
@@ -758,9 +758,9 @@
         <canvas id="stringsCanvas" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 24;"></canvas>
       </div>
 
-      <!-- Quick Nashville Grips & Action Row -->
-      <div class="flex flex-wrap items-center justify-between gap-1.5 shrink-0">
-        <div class="flex flex-wrap items-center gap-1 sm:gap-2">
+      <!-- Quick Nashville Grips & Circular Palm Damp (inside wood-grain deck, right below pickup) -->
+      <div class="flex items-center justify-between gap-2 shrink-0">
+        <div class="flex flex-wrap items-center gap-1 sm:gap-2 min-w-0">
           <span class="text-[10px] uppercase tracking-widest text-amber-200/80 font-bold mr-1 hidden sm:inline">Grips:</span>
           <button data-grip="high" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
             <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">Q</span>
@@ -781,15 +781,21 @@
           <button data-grip="strum" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-amber-200 flex items-center gap-1">
             ✨ Strum
           </button>
+          <span class="hidden lg:inline text-[10px] font-mono-tech text-amber-200/65 px-2 py-0.5 rounded bg-black/30 border border-amber-500/20 ml-1">
+            Bar ↑ Full Vol · ↓ Silent
+          </span>
         </div>
 
-        <span class="hidden sm:inline text-[10px] font-mono-tech text-amber-200/65 px-2 py-0.5 rounded bg-black/30 border border-amber-500/20">
-          Bar ↑ Full Vol · ↓ Silent
-        </span>
+        <!-- Large Circular Palm Damp Button (Inside wood-grain deck, right beneath Pluck/Strum pickup) -->
+        <button id="muteBtn" class="palm-damp-circle w-[68px] h-[68px] sm:w-[82px] sm:h-[82px] rounded-full shrink-0 mr-1 sm:mr-3 flex flex-col items-center justify-center text-center leading-tight select-none" title="Palm Damp / Mute all ringing strings (Spacebar)">
+          <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-rose-100 drop-shadow">Palm</span>
+          <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-rose-300 drop-shadow">Damp</span>
+          <span class="font-mono-tech text-[8px] text-rose-200/70 mt-0.5 hidden sm:inline">SPACE</span>
+        </button>
       </div>
     </main>
 
-    <!-- ==================== 3. LOWER FLOOR DECK (PEDALS, KNEE LEVERS, PALM DAMP & VOLUME) ==================== -->
+    <!-- ==================== 3. LOWER FLOOR DECK (PEDALS, KNEE LEVERS & VOLUME) ==================== -->
     <section class="amp-panel floor-deck rounded-2xl p-2.5 sm:p-3.5 shrink-0">
       <div class="flex flex-row items-stretch justify-between gap-2 sm:gap-3.5">
 
@@ -888,15 +894,6 @@
               </div>
             </button>
           </div>
-        </div>
-
-        <!-- Right-Center: Large Circular Palm Damp Button (Directly beneath Pickup Zone) -->
-        <div class="shrink-0 flex flex-col items-center justify-center gap-1 px-0.5 sm:px-1">
-          <button id="muteBtn" class="palm-damp-circle w-[84px] h-[84px] sm:w-[100px] sm:h-[100px] rounded-full flex flex-col items-center justify-center text-center leading-tight select-none" title="Palm Damp / Mute all ringing strings (Spacebar)">
-            <span class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-rose-100 drop-shadow">Palm</span>
-            <span class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-rose-300 drop-shadow">Damp</span>
-            <span class="font-mono-tech text-[8px] text-rose-200/70 mt-1 hidden sm:inline">SPACE</span>
-          </button>
         </div>
 
         <!-- Far Right: Compact Volume Pedal Gauge (Tracks Tone Bar Vertical Position) -->
