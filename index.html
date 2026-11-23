@@ -747,9 +747,9 @@
           <!-- Fret Lines, Numbers, Chord Labels, Pearloid Markers (populated by JS) -->
           <div id="fretsLayer" class="absolute inset-0 pointer-events-none"></div>
 
-          <!-- Chrome Tone Bar (X = Fret Pitch, Y = Volume Pedal Swell) -->
-          <div id="toneBar" class="tone-bar" title="Drag left/right to slide pitch, up/down to control volume (top = full, bottom = silent)">
-            <div id="toneBarVolDot" class="tone-bar-vol-dot" style="bottom: 85%;"></div>
+          <!-- Chrome Tone Bar (X = Fret Pitch, Y = Volume Pedal Swell: bottom = silent, midpoint = full) -->
+          <div id="toneBar" class="tone-bar" title="Drag left/right to slide pitch, up/down to control volume (midpoint = full, bottom = silent)">
+            <div id="toneBarVolDot" class="tone-bar-vol-dot" style="bottom: 43.4%;"></div>
           </div>
         </div>
 
@@ -807,7 +807,7 @@
             ✨ Strum
           </button>
           <span class="hidden lg:inline text-[10px] font-mono-tech text-amber-200/65 px-2 py-0.5 rounded bg-black/30 border border-amber-500/20 ml-1">
-            Bar ↑ Full Vol · ↓ Silent
+            Bar Mid = Full Vol · ↓ Silent
           </span>
         </div>
 
@@ -2082,9 +2082,11 @@
 
       function clientYToBarVolume(clientY) {
         const rect = fretboardArea.getBoundingClientRect();
-        const pad = Math.min(18, rect.height * 0.08);
-        const usable = Math.max(1, rect.height - pad * 2);
-        const norm = 1 - (clientY - rect.top - pad) / usable;
+        const bottomPad = Math.min(16, rect.height * 0.06);
+        const bottomY = rect.bottom - bottomPad;
+        const midY = rect.top + rect.height * 0.5;
+        const usable = Math.max(1, bottomY - midY);
+        const norm = (bottomY - clientY) / usable;
         return Math.max(0, Math.min(1, norm));
       }
 
@@ -2349,9 +2351,9 @@
         const travel = Math.max(4, trackH - treadleH - pad * 2);
         const bottomPx = pad + state.volumePedal * travel;
         volTreadle.style.bottom = `${bottomPx}px`;
-        // Mirror volume position directly on the chrome tone bar (top = full, bottom = silent)
+        // Mirror volume position on the lower half of the chrome tone bar (midpoint = full, bottom = silent)
         if (toneBarVolDot) {
-          toneBarVolDot.style.bottom = `${8 + state.volumePedal * 84}%`;
+          toneBarVolDot.style.bottom = `${6 + state.volumePedal * 44}%`;
           toneBarVolDot.style.opacity = state.volumePedal < 0.03 ? '0.45' : '1';
         }
         audio.updateVolumePedal(state.volumePedal, smoothTime);
