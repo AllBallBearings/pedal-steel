@@ -54,7 +54,7 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: radial-gradient(circle at 50% 0%, #231e1b 0%, #111012 60%, #09090b 100%);
       color: #e5e7eb;
-      padding: max(6px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+      padding: max(4px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(4px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
     }
 
     /* Multi-touch visual feedback ring */
@@ -124,32 +124,32 @@
         display: none !important;
       }
       .floor-deck {
-        padding: 6px 8px !important;
+        padding: 4px 8px !important;
       }
       .floor-pedal, .knee-lever {
-        min-height: 60px !important;
-        padding: 4px 4px !important;
+        min-height: 32px !important;
+        padding: 3px 6px !important;
       }
       .floor-pedal .pedal-letter {
-        font-size: 1.15rem !important;
+        font-size: 0.95rem !important;
       }
       .knee-lever .lever-title {
-        font-size: 0.9rem !important;
+        font-size: 0.8rem !important;
       }
-      .vol-pedal-track, .vol-hint-col {
-        height: 60px !important;
+      .vol-pedal-track {
+        height: 34px !important;
       }
       .vol-treadle {
-        height: 24px !important;
+        height: 14px !important;
       }
       .grip-btn {
         padding: 4px 8px !important;
         font-size: 11px !important;
       }
       .palm-damp-circle {
-        width: 52px !important;
-        height: 52px !important;
-        margin-right: 52px !important;
+        width: 48px !important;
+        height: 48px !important;
+        margin-right: 48px !important;
       }
     }
 
@@ -197,20 +197,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
       cursor: ns-resize;
       touch-action: none;
     }
 
     .knob-body {
       position: relative;
-      width: 42px;
-      height: 42px;
+      width: 34px;
+      height: 34px;
       border-radius: 9999px;
       background: radial-gradient(circle at 30% 25%, #3f444e 0%, #1d2026 55%, #0c0d10 100%);
       border: 2px solid #525965;
       box-shadow:
-        0 4px 10px rgba(0, 0, 0, 0.75),
+        0 3px 8px rgba(0, 0, 0, 0.75),
         inset 0 1px 2px rgba(255, 255, 255, 0.25);
       display: flex;
       align-items: center;
@@ -223,8 +223,8 @@
     }
 
     .knob-cap {
-      width: 28px;
-      height: 28px;
+      width: 22px;
+      height: 22px;
       border-radius: 9999px;
       background: conic-gradient(from 0deg, #d1d5db, #9ca3af, #f3f4f6, #6b7280, #d1d5db);
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 1px 3px rgba(0, 0, 0, 0.6);
@@ -235,9 +235,9 @@
       position: absolute;
       top: 2px;
       left: 50%;
-      width: 3px;
-      height: 11px;
-      margin-left: -1.5px;
+      width: 2.5px;
+      height: 9px;
+      margin-left: -1.25px;
       background: #111827;
       border-radius: 2px;
     }
@@ -359,19 +359,19 @@
         linear-gradient(180deg, #94a3b8 0%, #64748b 40%, #475569 100%);
       border: 2px solid #cbd5e1;
       box-shadow:
-        0 8px 0 #1e293b,
-        0 12px 18px rgba(0, 0, 0, 0.65),
+        0 4px 0 #1e293b,
+        0 6px 12px rgba(0, 0, 0, 0.6),
         inset 0 1px 2px rgba(255, 255, 255, 0.65);
       transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.1s ease;
       cursor: pointer;
       touch-action: none;
     }
     .floor-pedal.active {
-      transform: translateY(6px);
+      transform: translateY(3px);
       border-color: #f59e0b;
       box-shadow:
-        0 2px 0 #1e293b,
-        0 4px 10px rgba(245, 158, 11, 0.35),
+        0 1px 0 #1e293b,
+        0 3px 10px rgba(245, 158, 11, 0.4),
         inset 0 2px 8px rgba(245, 158, 11, 0.35);
     }
 
@@ -551,15 +551,15 @@
   </div>
 
   <!-- Main Instrument Rig Wrapper (Locked cleanly to full viewport width & height) -->
-  <div id="rigWrapper" class="w-full flex-1 min-h-0 flex flex-col justify-between gap-2">
+  <div id="rigWrapper" class="w-full flex-1 min-h-0 flex flex-col justify-between gap-1.5">
 
     <!-- ==================== 1. TOP VINTAGE AMP CONTROL PANEL ==================== -->
-    <header class="amp-panel rounded-2xl overflow-hidden shrink-0">
+    <header class="amp-panel rounded-xl overflow-hidden shrink-0">
       <!-- Silverface Header Strip -->
-      <div class="silverface-strip px-3 sm:px-4 py-1 flex flex-wrap items-center justify-between gap-1.5 text-xs font-semibold tracking-wide">
+      <div class="silverface-strip px-2.5 sm:px-3.5 py-0.5 flex flex-wrap items-center justify-between gap-1.5 text-xs font-semibold tracking-wide">
         <div class="flex items-center gap-2">
           <div id="jewelLamp" class="jewel-lamp standby" title="Amp Power Status"></div>
-          <span class="font-vintage italic text-sm sm:text-lg font-bold tracking-tight text-slate-900">Pedal Steel</span>
+          <span class="font-vintage italic text-sm sm:text-base font-bold tracking-tight text-slate-900">Pedal Steel</span>
           <label class="flex items-center gap-1" title="Switch Pedal Steel Tone Preset">
             <span class="text-[9px] uppercase tracking-wider text-slate-700 font-bold hidden xl:inline">Tone:</span>
             <select id="presetSelect" class="preset-select" aria-label="Tone Preset">
@@ -570,94 +570,118 @@
               <option value="spacesteel">Ambient Space Steel</option>
             </select>
           </label>
-          <button id="audioUnlockPill" class="px-2.5 py-0.5 rounded-full bg-amber-600 text-white font-mono-tech text-[10px] uppercase tracking-wider shadow animate-pulse">
+          <button id="audioUnlockPill" class="px-2 py-0.5 rounded-full bg-amber-600 text-white font-mono-tech text-[10px] uppercase tracking-wider shadow animate-pulse">
             🔊 Tap to Enable Audio
           </button>
         </div>
 
-        <!-- Demo Licks Bar -->
+        <!-- Demo Licks & Utility Bar -->
         <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
-          <span class="text-[10px] uppercase tracking-wider text-slate-700 font-bold mr-1 hidden lg:inline">Demo Licks:</span>
-          <button data-demo="swell" class="demo-btn px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
+          <span class="text-[10px] uppercase tracking-wider text-slate-700 font-bold mr-0.5 hidden lg:inline">Demo:</span>
+          <button data-demo="swell" class="demo-btn px-2 py-0.5 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
             <span>▶</span> I–IV Swell
           </button>
-          <button data-demo="turnaround" class="demo-btn px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
+          <button data-demo="turnaround" class="demo-btn px-2 py-0.5 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
             <span>▶</span> Turnaround
           </button>
-          <button data-demo="ambient" class="demo-btn px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
+          <button data-demo="ambient" class="demo-btn px-2 py-0.5 rounded-md bg-slate-900 text-slate-100 hover:bg-amber-600 hover:text-white transition text-[10px] sm:text-[11px] font-medium flex items-center gap-1 shadow">
             <span>▶</span> Space Steel
           </button>
-          <button id="stopDemoBtn" class="hidden px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-red-700 text-white hover:bg-red-600 transition text-[10px] sm:text-[11px] font-semibold shadow">
+          <button id="stopDemoBtn" class="hidden px-2 py-0.5 rounded-md bg-red-700 text-white hover:bg-red-600 transition text-[10px] sm:text-[11px] font-semibold shadow">
             ■ Stop
           </button>
-          <button id="toggleHelpBtn" class="ml-0.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md bg-slate-800/90 text-amber-300 hover:bg-slate-900 transition text-[10px] sm:text-[11px] font-medium border border-slate-600">
+          <button id="toggleHelpBtn" class="px-2 py-0.5 rounded-md bg-slate-800/90 text-amber-300 hover:bg-slate-900 transition text-[10px] sm:text-[11px] font-medium border border-slate-600">
             ⌨ Keys
+          </button>
+          <button id="fullscreenBtn" class="px-2 py-0.5 rounded-md bg-slate-900 text-sky-300 hover:bg-sky-700 hover:text-white transition text-[10px] sm:text-[11px] font-semibold border border-slate-600 flex items-center gap-1 shadow" title="Toggle Full Screen Mode">
+            <span id="fullscreenIcon">⛶</span>
+            <span id="fullscreenLabel">Full Screen</span>
           </button>
         </div>
       </div>
 
-      <!-- Amp Knobs + Live Chord Readout -->
-      <div class="amp-controls-row px-3 sm:px-4 py-2 flex flex-wrap md:flex-nowrap items-center justify-between gap-2 sm:gap-3 lg:gap-4">
+      <!-- Optional Fullscreen Tip (shown only if browser restricts Web Fullscreen, e.g. iPad Chrome) -->
+      <div id="fullscreenTip" class="hidden border-b border-sky-500/40 bg-sky-950/90 px-3 py-1.5 text-[11px] text-sky-100 flex items-center justify-between gap-2">
+        <span>
+          <strong>iPad Full Screen Tip:</strong> Chrome on iPad blocks web fullscreen. For zero tabs/address bar, open in <strong>Safari</strong> and tap <strong>Full Screen</strong>, or tap <strong>Share → Add to Home Screen</strong>.
+        </span>
+        <button id="dismissFsTipBtn" class="px-2 py-0.5 rounded bg-sky-500/30 hover:bg-sky-500/50 text-sky-100 font-semibold text-[10px] shrink-0">Got it</button>
+      </div>
+
+      <!-- Amp Knobs + Live Chord Readout (Compact Single-Row Layout) -->
+      <div class="amp-controls-row px-2.5 sm:px-3.5 py-1 flex flex-wrap md:flex-nowrap items-center justify-between gap-2 sm:gap-3">
         <!-- Live Chord & Bar Position LED Readout -->
-        <div class="led-display rounded-xl px-3 py-1.5 flex items-center gap-3 min-w-[200px] flex-1 md:flex-none md:w-[240px] lg:w-[290px]">
+        <div class="led-display rounded-lg px-2.5 py-1 flex items-center gap-2.5 min-w-[200px] flex-1 md:flex-none md:w-[250px] lg:w-[290px]">
           <div class="flex-1 min-w-0">
-            <div class="text-[9px] uppercase tracking-widest text-slate-400 font-mono-tech flex items-center justify-between">
+            <div class="text-[8px] uppercase tracking-widest text-slate-400 font-mono-tech flex items-center justify-between leading-none">
               <span>Chord</span>
               <span id="barFretReadout" class="text-sky-400">FRET 0.0</span>
             </div>
-            <div id="chordReadout" class="text-lg sm:text-xl font-bold font-mono-tech text-amber-400 truncate mt-0.5">
+            <div id="chordReadout" class="text-base sm:text-lg font-bold font-mono-tech text-amber-400 truncate leading-tight mt-0.5">
               E Major
             </div>
-            <div id="activePedalsReadout" class="text-[9px] font-mono-tech text-slate-400 truncate">
+            <div id="activePedalsReadout" class="text-[8px] font-mono-tech text-slate-400 truncate leading-none">
               Open E9 Tuning
             </div>
           </div>
-          <div class="flex flex-col items-end gap-1">
-            <button id="autoSwellBtn" class="px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm" title="Automatically swells volume smoothly on every pluck">
+          <div class="flex flex-col items-end gap-0.5">
+            <button id="autoSwellBtn" class="px-2 py-0.5 rounded text-[9px] font-semibold border transition bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm leading-tight" title="Automatically swells volume smoothly on every pluck">
               Auto-Swell: ON
             </button>
-            <button id="vibratoBtn" class="px-2 py-0.5 rounded-lg text-[10px] font-semibold border transition bg-sky-500/20 border-sky-400 text-sky-300" title="Toggle subtle singing bar vibrato">
+            <button id="vibratoBtn" class="px-2 py-0.5 rounded text-[9px] font-semibold border transition bg-sky-500/20 border-sky-400 text-sky-300 leading-tight" title="Toggle subtle singing bar vibrato">
               Vibrato: MED
             </button>
           </div>
         </div>
 
-        <!-- Rotary Amp Knobs -->
-        <div class="flex items-center justify-around sm:justify-between md:justify-end gap-2 sm:gap-3 lg:gap-5 flex-1 min-w-0 overflow-x-auto">
+        <!-- Rotary Amp Knobs (Evenly distributed across available width) -->
+        <div class="flex items-center justify-around md:justify-between gap-2 sm:gap-3 flex-1 min-w-0 overflow-x-auto px-1">
           <div class="knob-wrap" data-param="ampVolume" data-min="0" data-max="1" data-value="0.80" data-default="0.80">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
-            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Volume</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">80%</span>
+            <div class="flex items-center gap-1 leading-none">
+              <span class="text-[9px] uppercase tracking-wider text-slate-300 font-semibold">Vol</span>
+              <span class="knob-val text-[9px] font-mono-tech text-amber-400">80%</span>
+            </div>
           </div>
 
           <div class="knob-wrap" data-param="toneChime" data-min="0" data-max="1" data-value="0.72" data-default="0.72">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
-            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Chime</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">72%</span>
+            <div class="flex items-center gap-1 leading-none">
+              <span class="text-[9px] uppercase tracking-wider text-slate-300 font-semibold">Chime</span>
+              <span class="knob-val text-[9px] font-mono-tech text-amber-400">72%</span>
+            </div>
           </div>
 
           <div class="knob-wrap" data-param="tubeWarmth" data-min="0" data-max="1" data-value="0.12" data-default="0.12">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
-            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Tubes</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">12%</span>
+            <div class="flex items-center gap-1 leading-none">
+              <span class="text-[9px] uppercase tracking-wider text-slate-300 font-semibold">Tubes</span>
+              <span class="knob-val text-[9px] font-mono-tech text-amber-400">12%</span>
+            </div>
           </div>
 
           <div class="knob-wrap" data-param="reverb" data-min="0" data-max="1" data-value="0.58" data-default="0.58">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
-            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Studio Rev</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">58%</span>
+            <div class="flex items-center gap-1 leading-none">
+              <span class="text-[9px] uppercase tracking-wider text-slate-300 font-semibold">Rev</span>
+              <span class="knob-val text-[9px] font-mono-tech text-amber-400">58%</span>
+            </div>
           </div>
 
           <div class="knob-wrap" data-param="delay" data-min="0" data-max="1" data-value="0.22" data-default="0.22">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
-            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Tape Delay</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">22%</span>
+            <div class="flex items-center gap-1 leading-none">
+              <span class="text-[9px] uppercase tracking-wider text-slate-300 font-semibold">Delay</span>
+              <span class="knob-val text-[9px] font-mono-tech text-amber-400">22%</span>
+            </div>
           </div>
 
           <div class="knob-wrap" data-param="glideSpeed" data-min="0" data-max="1" data-value="0.65" data-default="0.65">
             <div class="knob-body"><div class="knob-cap"><div class="knob-indicator"></div></div></div>
-            <span class="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">Bar Glide</span>
-            <span class="knob-val text-[10px] font-mono-tech text-amber-400">65%</span>
+            <div class="flex items-center gap-1 leading-none">
+              <span class="text-[9px] uppercase tracking-wider text-slate-300 font-semibold">Glide</span>
+              <span class="knob-val text-[9px] font-mono-tech text-amber-400">65%</span>
+            </div>
           </div>
         </div>
       </div>
@@ -693,20 +717,20 @@
     </header>
 
     <!-- ==================== 2. PEDAL STEEL INSTRUMENT DECK ==================== -->
-    <main class="steel-body rounded-2xl p-2.5 sm:p-3.5 flex-1 min-h-0 flex flex-col gap-2">
+    <main class="steel-body rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2 flex-1 min-h-0 flex flex-col gap-1.5">
       <!-- Top Brand Inlay & Quick Tip -->
       <div class="steel-brand-row flex flex-wrap items-center justify-between gap-2 px-1 shrink-0">
         <div class="flex items-center gap-2">
-          <span class="font-vintage italic text-amber-200/90 text-sm sm:text-base tracking-wide drop-shadow">Sho-Master Pro E9</span>
-          <span class="text-[11px] text-amber-100/60 hidden md:inline">• Slide bar L/R for pitch, Up/Down for volume • Hold pedals &amp; strum pickup simultaneously</span>
+          <span class="font-vintage italic text-amber-200/90 text-xs sm:text-sm tracking-wide drop-shadow">Sho-Master Pro E9</span>
+          <span class="text-[10px] text-amber-100/60 hidden md:inline">• Slide bar L/R for pitch, Up/Down for volume • Hold pedals &amp; strum pickup simultaneously</span>
         </div>
-        <div id="statusBadge" class="text-[10px] font-mono-tech px-2.5 py-0.5 rounded-full bg-black/45 border border-amber-400/30 text-amber-200">
+        <div id="statusBadge" class="text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-black/45 border border-amber-400/30 text-amber-200 leading-none">
           Tap anywhere to ignite tubes
         </div>
       </div>
 
       <!-- Main Neck + Fretboard + Pickup Assembly -->
-      <div id="neckAssembly" class="relative w-full flex-1 min-h-[145px] rounded-xl overflow-hidden flex items-stretch shadow-2xl border border-slate-400/60 bg-slate-950">
+      <div id="neckAssembly" class="relative w-full flex-1 min-h-[160px] rounded-xl overflow-hidden flex items-stretch shadow-2xl border border-slate-400/60 bg-slate-950">
 
         <!-- Left Keyhead / String Tuning Labels -->
         <div class="brushed-aluminum w-[54px] sm:w-[74px] shrink-0 flex flex-col justify-between py-1 px-1 border-r-2 border-slate-700 z-20">
@@ -763,23 +787,23 @@
       <div class="flex items-center justify-between gap-2 shrink-0">
         <div class="flex flex-wrap items-center gap-1 sm:gap-2 min-w-0">
           <span class="text-[10px] uppercase tracking-widest text-amber-200/80 font-bold mr-1 hidden sm:inline">Grips:</span>
-          <button data-grip="high" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+          <button data-grip="high" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
             <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">Q</span>
             High <span class="text-slate-400 text-[10px] hidden md:inline">(3-4-5)</span>
           </button>
-          <button data-grip="mid" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+          <button data-grip="mid" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
             <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">W</span>
             Mid <span class="text-slate-400 text-[10px] hidden md:inline">(4-5-6)</span>
           </button>
-          <button data-grip="warm" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+          <button data-grip="warm" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
             <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">E</span>
             Warm <span class="text-slate-400 text-[10px] hidden md:inline">(5-6-8)</span>
           </button>
-          <button data-grip="low" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
+          <button data-grip="low" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg text-xs font-semibold text-slate-100 flex items-center gap-1.5">
             <span class="font-mono-tech text-[10px] text-amber-400 bg-black/50 px-1 rounded">R</span>
             Low <span class="text-slate-400 text-[10px] hidden md:inline">(8-9-10)</span>
           </button>
-          <button data-grip="strum" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs font-semibold text-amber-200 flex items-center gap-1">
+          <button data-grip="strum" class="grip-btn px-2.5 py-1 sm:px-3 sm:py-1 rounded-lg text-xs font-semibold text-amber-200 flex items-center gap-1">
             ✨ Strum
           </button>
           <span class="hidden lg:inline text-[10px] font-mono-tech text-amber-200/65 px-2 py-0.5 rounded bg-black/30 border border-amber-500/20 ml-1">
@@ -788,132 +812,85 @@
         </div>
 
         <!-- Large Circular Palm Damp Button (Inside wood-grain deck, offset one diameter from right edge) -->
-        <button id="muteBtn" class="palm-damp-circle w-[68px] h-[68px] sm:w-[82px] sm:h-[82px] rounded-full shrink-0 mr-[68px] sm:mr-[82px] flex flex-col items-center justify-center text-center leading-tight select-none" title="Palm Damp / Mute all ringing strings (Spacebar)">
-          <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-rose-100 drop-shadow">Palm</span>
-          <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider text-rose-300 drop-shadow">Damp</span>
-          <span class="font-mono-tech text-[8px] text-rose-200/70 mt-0.5 hidden sm:inline">SPACE</span>
+        <button id="muteBtn" class="palm-damp-circle w-[58px] h-[58px] sm:w-[66px] sm:h-[66px] rounded-full shrink-0 mr-[58px] sm:mr-[66px] flex flex-col items-center justify-center text-center leading-tight select-none" title="Palm Damp / Mute all ringing strings (Spacebar)">
+          <span class="text-[9px] sm:text-[11px] font-black uppercase tracking-wider text-rose-100 drop-shadow">Palm</span>
+          <span class="text-[9px] sm:text-[11px] font-black uppercase tracking-wider text-rose-300 drop-shadow">Damp</span>
+          <span class="font-mono-tech text-[7px] text-rose-200/70 hidden sm:inline">SPACE</span>
         </button>
       </div>
     </main>
 
-    <!-- ==================== 3. LOWER FLOOR DECK (PEDALS, KNEE LEVERS & VOLUME) ==================== -->
-    <section class="amp-panel floor-deck rounded-2xl p-2.5 sm:p-3.5 shrink-0">
-      <div class="flex flex-row items-stretch justify-between gap-2 sm:gap-3.5">
+    <!-- ==================== 3. COMPACT LOWER FLOOR DECK (PEDALS, KNEE LEVERS & VOLUME) ==================== -->
+    <section class="amp-panel floor-deck rounded-xl px-2 py-1.5 sm:px-3 sm:py-1.5 shrink-0">
+      <div class="flex flex-row items-center justify-between gap-2 sm:gap-3">
 
-        <!-- Left: Floor Pedals A, B, C + Latch Mode Toggle -->
-        <div class="flex-1 flex flex-col gap-1.5 min-w-0">
-          <div class="flex items-center justify-between gap-1">
-            <div class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 truncate">
-              <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-              Pedals
-            </div>
-            <button id="latchModeBtn" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-800 border border-slate-600 text-slate-200 hover:border-amber-400 transition shrink-0">
-              <span id="latchModeText" class="text-amber-400">Momentary</span>
-            </button>
-          </div>
+        <!-- Latch / Momentary Toggle -->
+        <button id="latchModeBtn" class="px-2 py-1 rounded-lg text-[9px] sm:text-[10px] font-semibold bg-slate-800 border border-slate-600 text-slate-200 hover:border-amber-400 transition shrink-0 flex flex-col items-center leading-tight" title="Toggle Momentary vs Latch pedal mode">
+          <span class="text-[8px] uppercase text-slate-400 tracking-wider">Mode</span>
+          <span id="latchModeText" class="text-amber-400 font-bold">Momentary</span>
+        </button>
 
-          <div class="grid grid-cols-3 gap-1.5 sm:gap-2.5">
-            <!-- Pedal A -->
-            <button id="pedal-A" data-mech="A" class="floor-pedal rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
-              <div class="flex items-center justify-between w-full px-0.5">
-                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-900/80 text-amber-300 hidden sm:inline">A</span>
-                <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led ml-auto"></span>
-              </div>
-              <div class="pedal-letter text-xl sm:text-2xl font-black text-slate-950 drop-shadow leading-none">A</div>
-              <div class="text-[9px] font-mono-tech font-bold text-slate-950 bg-white/60 px-1 py-0.5 rounded text-center truncate w-full">
-                5,10 +2
-              </div>
-            </button>
+        <!-- Floor Pedals A, B, C (Compact Single-Row Stomp Strip) -->
+        <div class="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2 min-w-0">
+          <!-- Pedal A -->
+          <button id="pedal-A" data-mech="A" class="floor-pedal rounded-lg px-2 py-1 flex items-center justify-between gap-1 min-h-[36px] sm:min-h-[42px]">
+            <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led shrink-0"></span>
+            <span class="pedal-letter text-sm sm:text-base font-black text-slate-950 drop-shadow leading-none">A</span>
+            <span class="text-[8px] sm:text-[9px] font-mono-tech font-bold text-slate-950 bg-white/65 px-1 py-0.5 rounded truncate">5,10 +2</span>
+          </button>
 
-            <!-- Pedal B -->
-            <button id="pedal-B" data-mech="B" class="floor-pedal rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
-              <div class="flex items-center justify-between w-full px-0.5">
-                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-900/80 text-amber-300 hidden sm:inline">S</span>
-                <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led ml-auto"></span>
-              </div>
-              <div class="pedal-letter text-xl sm:text-2xl font-black text-slate-950 drop-shadow leading-none">B</div>
-              <div class="text-[9px] font-mono-tech font-bold text-slate-950 bg-white/60 px-1 py-0.5 rounded text-center truncate w-full">
-                3,6 +1
-              </div>
-            </button>
+          <!-- Pedal B -->
+          <button id="pedal-B" data-mech="B" class="floor-pedal rounded-lg px-2 py-1 flex items-center justify-between gap-1 min-h-[36px] sm:min-h-[42px]">
+            <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led shrink-0"></span>
+            <span class="pedal-letter text-sm sm:text-base font-black text-slate-950 drop-shadow leading-none">B</span>
+            <span class="text-[8px] sm:text-[9px] font-mono-tech font-bold text-slate-950 bg-white/65 px-1 py-0.5 rounded truncate">3,6 +1</span>
+          </button>
 
-            <!-- Pedal C -->
-            <button id="pedal-C" data-mech="C" class="floor-pedal rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
-              <div class="flex items-center justify-between w-full px-0.5">
-                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-900/80 text-amber-300 hidden sm:inline">D</span>
-                <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led ml-auto"></span>
-              </div>
-              <div class="pedal-letter text-xl sm:text-2xl font-black text-slate-950 drop-shadow leading-none">C</div>
-              <div class="text-[9px] font-mono-tech font-bold text-slate-950 bg-white/60 px-1 py-0.5 rounded text-center truncate w-full">
-                4,5 +2
-              </div>
-            </button>
-          </div>
+          <!-- Pedal C -->
+          <button id="pedal-C" data-mech="C" class="floor-pedal rounded-lg px-2 py-1 flex items-center justify-between gap-1 min-h-[36px] sm:min-h-[42px]">
+            <span class="w-2 h-2 rounded-full bg-slate-900 pedal-led shrink-0"></span>
+            <span class="pedal-letter text-sm sm:text-base font-black text-slate-950 drop-shadow leading-none">C</span>
+            <span class="text-[8px] sm:text-[9px] font-mono-tech font-bold text-slate-950 bg-white/65 px-1 py-0.5 rounded truncate">4,5 +2</span>
+          </button>
         </div>
 
-        <!-- Middle: Knee Levers (LKL, LKR, RKR) -->
-        <div class="flex-1 flex flex-col gap-1.5 min-w-0">
-          <div class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 truncate">
-            <span class="w-2 h-2 rounded-full bg-sky-400 shrink-0"></span>
-            Knee Levers
-          </div>
+        <!-- Subtle Divider -->
+        <div class="w-px h-7 bg-slate-700/80 shrink-0"></div>
 
-          <div class="grid grid-cols-3 gap-1.5 sm:gap-2.5">
-            <!-- LKL -->
-            <button id="lever-LKL" data-mech="LKL" class="knee-lever rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
-              <div class="flex items-center justify-between w-full px-0.5">
-                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-950/80 text-sky-300 hidden sm:inline">Z</span>
-                <span class="w-2 h-2 rounded-full bg-slate-950 lever-led ml-auto"></span>
-              </div>
-              <div class="lever-title text-sm sm:text-lg font-bold text-slate-100 leading-none">LKL</div>
-              <div class="text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/70 px-1 py-0.5 rounded text-center truncate w-full">
-                4,8 +1
-              </div>
-            </button>
+        <!-- Knee Levers LKL, LKR, RKR (Compact Single-Row Strip) -->
+        <div class="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2 min-w-0">
+          <!-- LKL -->
+          <button id="lever-LKL" data-mech="LKL" class="knee-lever rounded-lg px-2 py-1 flex items-center justify-between gap-1 min-h-[36px] sm:min-h-[42px]">
+            <span class="w-2 h-2 rounded-full bg-slate-950 lever-led shrink-0"></span>
+            <span class="lever-title text-xs sm:text-sm font-bold text-slate-100 leading-none">LKL</span>
+            <span class="text-[8px] sm:text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/75 px-1 py-0.5 rounded truncate">4,8 +1</span>
+          </button>
 
-            <!-- LKR -->
-            <button id="lever-LKR" data-mech="LKR" class="knee-lever rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
-              <div class="flex items-center justify-between w-full px-0.5">
-                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-950/80 text-sky-300 hidden sm:inline">X</span>
-                <span class="w-2 h-2 rounded-full bg-slate-950 lever-led ml-auto"></span>
-              </div>
-              <div class="lever-title text-sm sm:text-lg font-bold text-slate-100 leading-none">LKR</div>
-              <div class="text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/70 px-1 py-0.5 rounded text-center truncate w-full">
-                4,8 -1
-              </div>
-            </button>
+          <!-- LKR -->
+          <button id="lever-LKR" data-mech="LKR" class="knee-lever rounded-lg px-2 py-1 flex items-center justify-between gap-1 min-h-[36px] sm:min-h-[42px]">
+            <span class="w-2 h-2 rounded-full bg-slate-950 lever-led shrink-0"></span>
+            <span class="lever-title text-xs sm:text-sm font-bold text-slate-100 leading-none">LKR</span>
+            <span class="text-[8px] sm:text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/75 px-1 py-0.5 rounded truncate">4,8 -1</span>
+          </button>
 
-            <!-- RKR -->
-            <button id="lever-RKR" data-mech="RKR" class="knee-lever rounded-xl py-2 px-1.5 flex flex-col items-center justify-between min-h-[82px] sm:min-h-[96px]">
-              <div class="flex items-center justify-between w-full px-0.5">
-                <span class="font-mono-tech text-[9px] px-1 rounded bg-slate-950/80 text-sky-300 hidden sm:inline">C</span>
-                <span class="w-2 h-2 rounded-full bg-slate-950 lever-led ml-auto"></span>
-              </div>
-              <div class="lever-title text-sm sm:text-lg font-bold text-slate-100 leading-none">RKR</div>
-              <div class="text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/70 px-1 py-0.5 rounded text-center truncate w-full">
-                2,9 -1
-              </div>
-            </button>
-          </div>
+          <!-- RKR -->
+          <button id="lever-RKR" data-mech="RKR" class="knee-lever rounded-lg px-2 py-1 flex items-center justify-between gap-1 min-h-[36px] sm:min-h-[42px]">
+            <span class="w-2 h-2 rounded-full bg-slate-950 lever-led shrink-0"></span>
+            <span class="lever-title text-xs sm:text-sm font-bold text-slate-100 leading-none">RKR</span>
+            <span class="text-[8px] sm:text-[9px] font-mono-tech text-sky-200/90 bg-slate-950/75 px-1 py-0.5 rounded truncate">2,9 -1</span>
+          </button>
         </div>
 
-        <!-- Far Right: Compact Volume Pedal Gauge (Tracks Tone Bar Vertical Position) -->
-        <div class="w-[62px] sm:w-[78px] shrink-0 flex flex-col gap-1.5">
-          <div class="flex items-center justify-between gap-1">
-            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-300">Vol</span>
+        <!-- Compact Volume Pedal Gauge (Mirrors Tone Bar Vertical Position) -->
+        <div class="shrink-0 flex items-center gap-1.5 pl-1 border-l border-slate-700/80">
+          <div class="flex flex-col items-end leading-tight">
+            <span class="text-[8px] font-bold uppercase tracking-wider text-slate-400">Vol</span>
             <span id="volPedalReadout" class="font-mono-tech text-[10px] font-bold text-amber-400">85%</span>
           </div>
-
-          <div class="flex items-center flex-1">
-            <!-- Compact Vertical Treadle (Mirrors Tone Bar Y Position; still directly draggable) -->
-            <div id="volPedalTrack" class="vol-pedal-track relative w-full h-[82px] sm:h-[96px] rounded-xl p-1 overflow-hidden" title="Tracks vertical finger position on the tone bar (top = full, bottom = silent). You can also drag here or use Up/Down arrows.">
-              <!-- Glow Fill -->
-              <div id="volPedalFill" class="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-amber-600/40 to-amber-400/15 pointer-events-none transition-none" style="height: 85%;"></div>
-              <!-- Treadle Footplate -->
-              <div id="volTreadle" class="vol-treadle absolute left-1 right-1 h-6 sm:h-7 rounded-md flex flex-col items-center justify-center pointer-events-none">
-                <span class="text-[7px] font-black tracking-wider text-slate-950 uppercase">Bar</span>
-                <div class="w-4 h-0.5 bg-slate-900/60 mt-0.5 rounded"></div>
-              </div>
+          <div id="volPedalTrack" class="vol-pedal-track relative w-[34px] sm:w-[42px] h-[38px] sm:h-[42px] rounded-lg p-0.5 overflow-hidden" title="Tracks vertical finger position on the tone bar (top = full, bottom = silent). You can also drag here or use Up/Down arrows.">
+            <div id="volPedalFill" class="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-amber-600/45 to-amber-400/20 pointer-events-none transition-none" style="height: 85%;"></div>
+            <div id="volTreadle" class="vol-treadle absolute left-0.5 right-0.5 h-3.5 rounded flex items-center justify-center pointer-events-none">
+              <div class="w-3 h-0.5 bg-slate-900/70 rounded"></div>
             </div>
           </div>
         </div>
@@ -2366,10 +2343,10 @@
         volPedalReadout.textContent = `${pct}%`;
         volPedalFill.style.height = `${pct}%`;
         // Dynamically compute travel inside compact track bounds for any screen size
-        const trackH = volPedalTrack.clientHeight || 96;
-        const treadleH = volTreadle.offsetHeight || 28;
-        const pad = 4;
-        const travel = Math.max(8, trackH - treadleH - pad * 2);
+        const trackH = volPedalTrack.clientHeight || 42;
+        const treadleH = volTreadle.offsetHeight || 14;
+        const pad = 2;
+        const travel = Math.max(4, trackH - treadleH - pad * 2);
         const bottomPx = pad + state.volumePedal * travel;
         volTreadle.style.bottom = `${bottomPx}px`;
         // Mirror volume position directly on the chrome tone bar (top = full, bottom = silent)
@@ -2534,6 +2511,67 @@
       const helpDrawer = document.getElementById('helpDrawer');
       document.getElementById('toggleHelpBtn').addEventListener('click', () => {
         helpDrawer.classList.toggle('hidden');
+      });
+
+      // Full Screen toggle (works natively in Desktop & iPadOS Safari; shows helpful tip on iPad Chrome)
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const fullscreenIcon = document.getElementById('fullscreenIcon');
+      const fullscreenLabel = document.getElementById('fullscreenLabel');
+      const fullscreenTip = document.getElementById('fullscreenTip');
+      const dismissFsTipBtn = document.getElementById('dismissFsTipBtn');
+
+      function isInFullscreen() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement);
+      }
+
+      function syncFullscreenUI() {
+        const active = isInFullscreen();
+        if (fullscreenIcon) fullscreenIcon.textContent = active ? '✕' : '⛶';
+        if (fullscreenLabel) fullscreenLabel.textContent = active ? 'Exit Full' : 'Full Screen';
+        if (fullscreenBtn) {
+          fullscreenBtn.classList.toggle('bg-sky-700', active);
+          fullscreenBtn.classList.toggle('text-white', active);
+          fullscreenBtn.classList.toggle('bg-slate-900', !active);
+          fullscreenBtn.classList.toggle('text-sky-300', !active);
+        }
+        if (active && fullscreenTip) fullscreenTip.classList.add('hidden');
+      }
+
+      async function toggleFullscreen() {
+        const docEl = document.documentElement;
+        try {
+          if (isInFullscreen()) {
+            if (document.exitFullscreen) await document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          } else {
+            const req = docEl.requestFullscreen || docEl.webkitRequestFullscreen;
+            if (req) {
+              const res = req.call(docEl);
+              if (res && typeof res.then === 'function') await res;
+            } else if (fullscreenTip) {
+              fullscreenTip.classList.toggle('hidden');
+            }
+          }
+        } catch (_) {
+          // Browsers like iPad Chrome (WKWebView) reject or disallow web fullscreen
+          if (fullscreenTip) fullscreenTip.classList.remove('hidden');
+        }
+        syncFullscreenUI();
+      }
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+      }
+      if (dismissFsTipBtn && fullscreenTip) {
+        dismissFsTipBtn.addEventListener('click', () => fullscreenTip.classList.add('hidden'));
+      }
+      document.addEventListener('fullscreenchange', () => {
+        syncFullscreenUI();
+        scheduleViewportSync(true);
+      });
+      document.addEventListener('webkitfullscreenchange', () => {
+        syncFullscreenUI();
+        scheduleViewportSync(true);
       });
 
       // --- H. Full Keyboard Controls ---
